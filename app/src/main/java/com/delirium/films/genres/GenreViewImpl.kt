@@ -46,10 +46,6 @@ class GenreViewImpl : Fragment(), GenreView {
         val bindingGenre = DataBindingUtil.inflate<FragmentGenreBinding>(inflater,
             R.layout.fragment_genre, container, false)
 
-     /*   if(savedInstanceState != null && savedInstanceState.containsKey("SELECT_VALUE")) {
-            selectValue = savedInstanceState.getString("SELECT_VALUE")
-        }*/
-
         adapter = FilmAdapter(ClickElement { element, type ->
             if (type == "film") {
                 val film = genrePresenter.getFilmInfo(element.toInt())
