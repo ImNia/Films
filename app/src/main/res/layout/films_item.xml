@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    >
+    <data>
+        <variable
+            name="filmVariable"
+            type="com.delirium.films.model.FilmInfo" />
+        <variable
+            name="filmListener"
+            type="com.delirium.films.ClickElement" />
+        <variable
+            name="type"
+            type="String" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/image_page"
+        android:layout_width="170dp"
+        android:layout_height="200dp"
+        android:onClick="@{() -> filmListener.onClickFilm(filmVariable.id, type)}"
+        android:padding="10dp">
+
+        <ImageView
+            android:id="@+id/image_film"
+            style="@style/FilmItem"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:scaleType="fitXY"
+            android:text="Изображение не найдено"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHeight_percent="0.9"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent="0.9"
+            app:url_corner="@{filmVariable.image_url}" />
+
+        <TextView
+            android:id="@+id/name_film"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:alpha="0.5"
+            android:background="#000000"
+            android:gravity="center"
+            android:text="@{filmVariable.localized_name}"
+            android:textColor="@color/white"
+            android:maxLines="2"
+            android:ellipsize="end"
+            app:layout_constraintBottom_toBottomOf="@+id/image_film"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHeight_percent="0.3"
+            app:layout_constraintWidth_percent="0.9"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/image_film"
+            app:layout_constraintTop_toTopOf="@+id/image_film"
+            app:layout_constraintVertical_bias="1.0" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

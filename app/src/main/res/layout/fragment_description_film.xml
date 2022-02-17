@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    >
+    <data>
+        <variable
+            name="filmInfo"
+            type="com.delirium.films.model.FilmInfo" />
+    </data>
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    style="@style/BaseBackground"
+    >
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/descriptionFilmFragment"
+        tools:context=".description.DescriptionFilm">
+
+        <ImageView
+            android:id="@+id/imageFilm"
+            android:layout_width="0dp"
+            android:layout_height="245dp"
+            app:url="@{filmInfo.image_url}"
+            app:layout_constraintWidth_percent="0.4"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/descriptionFilm"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@{filmInfo.description}"
+            android:textColor="@color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageFilm"
+            tools:text="Description"/>
+
+        <TextView
+            android:id="@+id/originName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="24dp"
+            android:text="@{filmInfo.name}"
+            android:textColor="@color/white"
+            android:paddingBottom="15dp"
+            app:layout_constraintStart_toEndOf="@+id/imageFilm"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Name Film" />
+
+        <TextView
+            android:id="@+id/year"
+            android:layout_width="wrap_content"
+            android:layout_height="45dp"
+            android:layout_marginStart="4dp"
+            android:text='@{"Год: " + filmInfo.year}'
+            android:textColor="@color/white"
+            app:layout_constraintStart_toEndOf="@+id/imageFilm"
+            app:layout_constraintTop_toBottomOf="@+id/originName"
+            tools:text="Year" />
+
+        <TextView
+            android:id="@+id/rating"
+            android:layout_width="wrap_content"
+            android:layout_height="45dp"
+            android:layout_marginStart="4dp"
+            android:text='@{"Рейтинг: " + filmInfo.rating}'
+            android:textColor="@color/white"
+            app:layout_constraintStart_toEndOf="@+id/imageFilm"
+            app:layout_constraintTop_toBottomOf="@+id/year"
+            tools:text="Rating" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
+</layout>

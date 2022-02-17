@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="BaseBackground">
+        <item name="android:background">@color/background</item>
+    </style>
+    <style name="ColorTiles">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:background">@color/background_title</item>
+    </style>
+    <style name="ColorGenre">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:background">@color/background_genre</item>
+    </style>
+    <style name="ColorGenreSelect">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:background">@color/background_genre_select</item>
+    </style>
+    <style name="FilmItem">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">8dp</item>
+    </style>
+</resources>

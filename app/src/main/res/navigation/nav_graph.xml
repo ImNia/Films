@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/genreViewImpl">
+
+    <fragment
+        android:id="@+id/genreViewImpl"
+        android:name="com.delirium.films.genres.GenreViewImpl"
+        android:label="Главная"
+        tools:layout="@layout/fragment_genre" >
+        <action
+            android:id="@+id/action_genreViewImpl_to_descriptionFilm"
+            app:destination="@id/descriptionFilmNav" />
+    </fragment>
+    <fragment
+        android:id="@+id/descriptionFilmNav"
+        android:name="com.delirium.films.description.DescriptionFilm"
+        android:label="{titleFilm}"
+        tools:layout="@layout/fragment_description_film"/>
+</navigation>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    >
+    <data>
+        <variable
+            name="genreVariable"
+            type="String" />
+        <variable
+            name="genreListener"
+            type="com.delirium.films.ClickElement" />
+        <variable
+            name="type"
+            type="String" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/film_title"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        >
+
+        <TextView
+            android:id="@+id/genre_film"
+            style="@style/ColorGenre"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="10dp"
+            android:background="@drawable/rounded_corner"
+            android:gravity="center"
+            android:text="@{genreVariable}"
+            android:onClick="@{() -> genreListener.onClick(genreVariable, type)}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHeight_percent="0.8"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent="0.4"
+            tools:text="Genre Type" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
