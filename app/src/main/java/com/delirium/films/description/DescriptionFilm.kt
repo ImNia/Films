@@ -13,6 +13,8 @@ import com.delirium.films.model.FilmInfo
 
 class DescriptionFilm : Fragment() {
 
+    private lateinit var viewBinding: FragmentDescriptionFilmBinding
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -20,13 +22,14 @@ class DescriptionFilm : Fragment() {
         val bindingDesc = DataBindingUtil.inflate<FragmentDescriptionFilmBinding>(inflater,
             R.layout.fragment_description_film, container, false)
 
+        viewBinding = FragmentDescriptionFilmBinding.inflate(inflater, container, false)
         val film = arguments?.get("film")
 
         if (film is FilmInfo) {
             Log.i("DESCRIPTION_FILM", "$film")
-            bindingDesc.filmInfo = film
+            viewBinding.filmInfo = film
         }
 
-        return bindingDesc.root
+        return viewBinding.root
     }
 }
