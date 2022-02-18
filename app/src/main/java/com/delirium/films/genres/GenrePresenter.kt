@@ -13,13 +13,14 @@ class GenrePresenter: ViewModel() {
 
     private val filmRequest: FilmsRequest = Common.filmsRequest
 
+    var selectGenre: String? = null
     var resultData: List<FilmInfo> = listOf()
 
     fun getViewFragment(genreViewAttach: GenreView) {
         genreView = genreViewAttach
     }
+
     fun attachView() {
-        Log.i("GENRE_PRESENTER", "Call attachView")
         filmRequest.films().enqueue(object : Callback<FilmList> {
             override fun onFailure(call: Call<FilmList>, t: Throwable) {
                 t.printStackTrace()
@@ -33,6 +34,11 @@ class GenrePresenter: ViewModel() {
             }
         } )
     }
+
+    fun detachView() {
+        super.onCleared()
+    }
+
     fun getAllMovieList() {
         drawGenresAndFilms(resultData)
     }
@@ -87,10 +93,10 @@ class GenrePresenter: ViewModel() {
         return dataSetFill(genres, filmListFilter)
     }
 
-    fun getFilmInfo(id: Int) : FilmInfo {
+    fun getFilmInfo(name: String) : FilmInfo {
         var currentFilm: FilmInfo? = null
         for(item in resultData) {
-            if (item.id == id)
+            if (item.localized_name == name)
                 currentFilm = item
         }
         return currentFilm ?: throw IllegalArgumentException()
@@ -125,5 +131,13 @@ class GenrePresenter: ViewModel() {
         }
 
         return dataSet
+    }
+
+    fun changeSelectGenre(currentGenre: String?) {
+        selectGenre = if (currentGenre == selectGenre) {
+            null
+        } else {
+            currentGenre
+        }
     }
 }

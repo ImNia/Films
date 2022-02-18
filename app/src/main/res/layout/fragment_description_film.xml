@@ -1,15 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    >
-    <data>
-        <variable
-            name="filmInfo"
-            type="com.delirium.films.model.FilmInfo" />
-    </data>
-<ScrollView
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     style="@style/BaseBackground"
@@ -24,7 +17,6 @@
             android:id="@+id/imageFilm"
             android:layout_width="0dp"
             android:layout_height="245dp"
-            app:url="@{filmInfo.image_url}"
             app:layout_constraintWidth_percent="0.4"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -78,4 +70,3 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
-</layout>

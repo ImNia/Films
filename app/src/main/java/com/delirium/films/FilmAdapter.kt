@@ -1,5 +1,6 @@
 package com.delirium.films
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,26 +11,41 @@ import com.delirium.films.databinding.FilmsItemBinding
 import com.delirium.films.databinding.GenreItemBinding
 import com.delirium.films.model.*
 
-class FilmAdapter(private val clickElementListener: ClickElement)
-    : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class FilmAdapter(val clickListener: ClickElement) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     var data = mutableListOf<ModelAdapter>()
     var selectValue: String? = null
     var prevSelectValue: String? = null
 
-    class GenreViewHolder(var binding: GenreItemBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: Genres, clickElementListener: ClickElement) {
-            binding.genreVariable = item.genre
-            binding.genreListener = clickElementListener
-            binding.type = "genre"
+    class GenreViewHolder(var binding: GenreItemBinding)
+        : RecyclerView.ViewHolder(binding.root), View.OnClickListener {
+        lateinit var clickElement: ClickElement
+
+        fun bind(item: Genres, clickGenreSelect: ClickElement) {
+            binding.genreFilm.text = item.genre
+            binding.genreFilm.isClickable = true
+            binding.genreFilm.setOnClickListener(this)
+            clickElement = clickGenreSelect
+        }
+
+        override fun onClick(p0: View?) {
+            clickElement.onClickGenre(binding.genreFilm.text.toString())
         }
     }
 
-    class FilmViewHolder(var binding: FilmsItemBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: FilmInfo, clickElementListener: ClickElement) {
-            binding.filmVariable = item
-            binding.filmListener = clickElementListener
-            binding.type = "film"
+    class FilmViewHolder(var binding: FilmsItemBinding)
+        : RecyclerView.ViewHolder(binding.root), View.OnClickListener {
+        lateinit var clickElement: ClickElement
+        fun bind(item: FilmInfo, clickElementSelect: ClickElement) {
+            BindingAdapters.loadImageWithCorner(binding.imageFilm, item.image_url)
+            binding.nameFilm.text = item.localized_name
+            binding.imageFilm.isClickable = true
+            binding.imageFilm.setOnClickListener(this)
+            clickElement = clickElementSelect
+        }
+
+        override fun onClick(p0: View?) {
+            clickElement.onClickFilm(binding.nameFilm.text.toString())
         }
     }
 
@@ -64,7 +80,7 @@ class FilmAdapter(private val clickElementListener: ClickElement)
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val item = data[position]
         if (holder is GenreViewHolder && item is Genres) {
-            holder.bind(item, clickElementListener)
+            holder.bind(item, clickListener)
             if(item.genre == selectValue) {
                 holder.binding.genreFilm.background =
                     ContextCompat.getDrawable(holder.binding.genreFilm.context, R.drawable.rounded_corner_selected)
@@ -73,7 +89,7 @@ class FilmAdapter(private val clickElementListener: ClickElement)
                     ContextCompat.getDrawable(holder.binding.genreFilm.context, R.drawable.rounded_corner)
             }
         } else if (holder is FilmViewHolder && item is Films) {
-            holder.bind(item.film, clickElementListener)
+            holder.bind(item.film, clickListener)
         } else if (holder is TitleViewHolder && item is Titles) {
             holder.bind(item)
         }
@@ -120,12 +136,7 @@ class FilmAdapter(private val clickElementListener: ClickElement)
     }
 }
 
-class ClickElement(val clickListener: (element: String, type: String) -> Unit) {
-    fun onClick(item: String, type: String) {
-        clickListener(item, type)
-    }
-
-    fun onClickFilm(item: Int, type: String) {
-        clickListener(item.toString(), type)
-    }
+interface ClickElement {
+    fun onClickFilm(name: String)
+    fun onClickGenre(genre: String)
 }

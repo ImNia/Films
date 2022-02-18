@@ -1,7 +1,6 @@
 package com.delirium.films.genres
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,41 +10,35 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.delirium.films.ClickElement
-import com.delirium.films.FilmAdapter
-import com.delirium.films.R
+import com.delirium.films.*
+import com.delirium.films.databinding.FilmsItemBinding
 import com.delirium.films.databinding.FragmentGenreBinding
+import com.delirium.films.databinding.GenreItemBinding
 import com.delirium.films.model.*
 
-class GenreViewImpl : Fragment(), GenreView {
+class GenreViewImpl : Fragment(), GenreView, ClickElement {
     private lateinit var adapter: FilmAdapter
     private lateinit var recyclerView: RecyclerView
     private lateinit var gridManager: GridLayoutManager
 
-    private var selectValue: String? = null
-
     private lateinit var viewBinding: FragmentGenreBinding
+    private lateinit var viewBindingFilm: FilmsItemBinding
+    private lateinit var viewBindingGenre: GenreItemBinding
 
     private val genrePresenter: GenrePresenter by activityViewModels()
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putString("SELECT_VALUE", selectValue)
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        Log.i("GENRE_VIEW_IMPL", "Call onCreate")
-        if(savedInstanceState != null && savedInstanceState.containsKey("SELECT_VALUE")) {
-            selectValue = savedInstanceState.getString("SELECT_VALUE")
-        }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         viewBinding = FragmentGenreBinding.inflate(inflater, container, false)
+        gridManager = GridLayoutManager(activity, 2)
+        recyclerView = viewBinding.recycler
+        recyclerView.layoutManager = gridManager
+
+        viewBindingFilm = FilmsItemBinding.inflate(inflater, container, false)
+        viewBindingGenre = GenreItemBinding.inflate(inflater, container, false)
+
         return viewBinding.root
     }
 
@@ -56,27 +49,7 @@ class GenreViewImpl : Fragment(), GenreView {
         }
         genrePresenter.getViewFragment(this)
 
-        adapter = FilmAdapter(ClickElement { element, type ->
-            if (type == "film") {
-                val film = genrePresenter.getFilmInfo(element.toInt())
-                val bundle = bundleOf("film" to film)
-                bundle.putString("titleFilm", film.localized_name)
-                viewBinding.root.findNavController().navigate(
-                    R.id.action_genreViewImpl_to_descriptionFilm, bundle
-                )
-            } else if (type == "genre") {
-                selectValue = if (element == selectValue) {
-                    null
-                } else {
-                    element
-                }
-                adapter.selectValue = selectValue
-                genrePresenter.drawFilms(selectValue)
-            }
-        })
-
-        gridManager = GridLayoutManager(activity, 2)
-        recyclerView = viewBinding.recycler
+        adapter = FilmAdapter(this)
         genrePresenter.getAllMovieList()
 
         gridManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
@@ -89,15 +62,13 @@ class GenreViewImpl : Fragment(), GenreView {
                 }
             }
         }
-
-        recyclerView.layoutManager = gridManager
     }
 
     override fun drawGenresAndFilms(dataSet: MutableList<ModelAdapter>) {
-        if (selectValue != null) {
-            adapter.selectValue = selectValue
+        if (genrePresenter.selectGenre != null) {
+            adapter.selectValue = genrePresenter.selectGenre
             adapter.prevSelectValue = null
-            val data = genrePresenter.drawDataAfterRotate(selectValue!!)
+            val data = genrePresenter.drawDataAfterRotate(genrePresenter.selectGenre!!)
             adapter.data = data
             adapter.updateGenre()
         } else {
@@ -108,5 +79,20 @@ class GenreViewImpl : Fragment(), GenreView {
 
     override fun updateFilm(dataSet: MutableList<ModelAdapter>) {
         adapter.updateData(dataSet)
+    }
+
+    override fun onClickFilm(name: String) {
+        val film = genrePresenter.getFilmInfo(name)
+        val bundle = bundleOf("film" to film)
+        bundle.putString("titleFilm", film.localized_name)
+        viewBinding.root.findNavController().navigate(
+            R.id.action_genreViewImpl_to_descriptionFilm, bundle
+        )
+    }
+
+    override fun onClickGenre(genre: String) {
+        genrePresenter.changeSelectGenre(genre)
+        adapter.selectValue = genrePresenter.selectGenre
+        genrePresenter.drawFilms(genrePresenter.selectGenre)
     }
 }
