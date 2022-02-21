@@ -4,43 +4,37 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/image_page"
-        android:layout_width="170dp"
-        android:layout_height="200dp"
-        android:padding="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
     >
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.8"
+        />
 
-        <ImageView
-            android:id="@+id/image_film"
-            style="@style/FilmItem"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:scaleType="fitXY"
-            android:text="@string/image_not_found"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHeight_percent="0.9"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintWidth_percent="0.9"
-            android:contentDescription="@string/image_film" />
+    <ImageView
+        android:id="@+id/image_film"
+        style="@style/FilmItemImage"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:contentDescription="@string/image_film"
+        android:scaleType="fitCenter"
+        android:text="@string/image_not_found"
+        app:layout_constraintBottom_toTopOf="@+id/guideline" />
 
-        <TextView
-            android:id="@+id/name_film"
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:alpha="0.5"
-            android:background="#000000"
-            android:gravity="center"
-            android:textColor="@color/white"
-            android:maxLines="2"
-            android:ellipsize="end"
-            app:layout_constraintBottom_toBottomOf="@+id/image_film"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHeight_percent="0.3"
-            app:layout_constraintWidth_percent="0.9"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/image_film"
-            app:layout_constraintTop_toTopOf="@+id/image_film"
-            app:layout_constraintVertical_bias="1.0" />
+    <TextView
+        android:id="@+id/name_film"
+        style="@style/FilmItemText"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:ellipsize="end"
+        android:gravity="start"
+        android:maxLines="2"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHeight_percent="0.2"
+        tools:text="Name Film" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

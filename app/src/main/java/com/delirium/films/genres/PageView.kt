@@ -7,5 +7,5 @@ interface PageView {
     fun updateFilm(dataSet: MutableList<ModelAdapter>)
     fun showProgressBar()
     fun hideProgressBar()
-    fun hideProgressBarWithError()
+    fun progressBarWithError()
 }

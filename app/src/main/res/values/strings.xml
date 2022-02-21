@@ -1,8 +1,11 @@
 <resources>
     <string name="app_name">Films</string>
 
-    <string name="year">Год: %1$s</string>
-    <string name="rating">Рейтинг: %1$s</string>
+    <string name="year">%1$s, %2$s год</string>
+    <string name="year_without_genre">%1$s год</string>
+    <string name="rating">%1$s КиноПоиск</string>
+    <string name="rating_without_value">-</string>
+    <string name="without_description">Нет описания</string>
 
     <string name="data_not_load">Ошибка подключения сети</string>
     <string name="retry_on_error">Повторить</string>

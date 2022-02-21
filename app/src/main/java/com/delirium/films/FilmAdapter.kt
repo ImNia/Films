@@ -1,6 +1,5 @@
 package com.delirium.films
 
-import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -84,7 +83,7 @@ class FilmAdapter(private val clickListener: ClickElement) :
         val item = data[position]
         if (holder is GenreViewHolder && item is Genres) {
             holder.bind(item, clickListener)
-            if (item.genre == selectValue) {
+            if (item.genre.lowercase() == selectValue) {
                 holder.binding.genreFilm.background = ContextCompat.getDrawable(
                     holder.binding.genreFilm.context,
                     R.drawable.genre_selected
@@ -92,7 +91,7 @@ class FilmAdapter(private val clickListener: ClickElement) :
             } else {
                 holder.binding.genreFilm.background = ContextCompat.getDrawable(
                     holder.binding.genreFilm.context,
-                    R.drawable.rounded_corner
+                    R.drawable.genre
                 )
             }
         } else if (holder is FilmViewHolder && item is Films) {
@@ -125,9 +124,9 @@ class FilmAdapter(private val clickListener: ClickElement) :
 
     fun updateGenre() {
         for (item in data) {
-            if (item is Genres && item.genre == selectValue) {
+            if (item is Genres && item.genre.lowercase() == selectValue) {
                 notifyItemChanged(data.indexOf(item))
-            } else if (item is Genres && item.genre == prevSelectValue) {
+            } else if (item is Genres && item.genre.lowercase() == prevSelectValue) {
                 notifyItemChanged(data.indexOf(item))
             }
         }

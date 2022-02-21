@@ -23,10 +23,21 @@ class DescriptionFilmFragment : Fragment() {
 
         if (film is FilmInfo) {
             BindingAdapters.loadImageWithCorner(viewBinding.imageFilm, film.image_url)
+            viewBinding.originName.text = film.localized_name
+
+            if(film.genres.isNotEmpty()) {
+                viewBinding.year.text = getString(R.string.year, film.genres.first(), film.year)
+            } else{
+                viewBinding.year.text = getString(R.string.year_without_genre, film.year)
+            }
+            viewBinding.rating.text = film.rating?.let {
+                getString(R.string.rating,
+                    String.format("%.1f", film.rating!!.toDouble()).replace(",", ".")
+                )
+            } ?: getString(R.string.rating_without_value)
+
             viewBinding.descriptionFilm.text = film.description
-            viewBinding.originName.text = film.name
-            viewBinding.year.text = getString(R.string.year, film.year)
-            viewBinding.rating.text = getString(R.string.rating, film.rating)
+                ?: getString(R.string.without_description)
         }
 
         return viewBinding.root

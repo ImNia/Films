@@ -50,9 +50,11 @@ class PageViewFragment : Fragment(), PageView, ClickElement {
         if (presenter.pageView == null) {
             presenter.attachView()
         }
-        presenter.getViewFragment(this)
+        
+        presenter.setViewFragment(this)
 
         adapter = FilmAdapter(this)
+        adapter.selectValue = presenter.selectGenre
         presenter.getAllMovieList()
 
         gridManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
@@ -71,7 +73,7 @@ class PageViewFragment : Fragment(), PageView, ClickElement {
         if (presenter.selectGenre != null) {
             adapter.selectValue = presenter.selectGenre
             adapter.prevSelectValue = null
-            val data = presenter.drawDataAfterRotate(presenter.selectGenre!!)
+            val data = presenter.drawDataAfterRotate()
             adapter.data = data
             adapter.updateGenre()
         } else {
@@ -84,6 +86,21 @@ class PageViewFragment : Fragment(), PageView, ClickElement {
         adapter.updateData(dataSet)
     }
 
+    override fun onClickFilm(name: String) {
+        val film = presenter.getFilmInfo(name)
+        val bundle = bundleOf("film" to film)
+        bundle.putString("titleFilm", film.name)
+        pageViewBinding.root.findNavController().navigate(
+            R.id.action_genreViewImpl_to_descriptionFilm, bundle
+        )
+    }
+
+    override fun onClickGenre(genre: String) {
+        presenter.changeSelectGenre(genre.lowercase())
+        adapter.selectValue = presenter.selectGenre
+        presenter.drawFilterFilms()
+    }
+
     override fun showProgressBar() {
         pageViewBinding.progressBar.visibility = ProgressBar.VISIBLE
     }
@@ -92,7 +109,7 @@ class PageViewFragment : Fragment(), PageView, ClickElement {
         pageViewBinding.progressBar.visibility = ProgressBar.INVISIBLE
     }
 
-    override fun hideProgressBarWithError() {
+    override fun progressBarWithError() {
         val builder = AlertDialog.Builder(activity)
         builder.setMessage(R.string.data_not_load)
             .setCancelable(false)
@@ -103,20 +120,5 @@ class PageViewFragment : Fragment(), PageView, ClickElement {
         val alertDialog = builder.create()
         alertDialog.window?.setGravity(Gravity.BOTTOM)
         alertDialog.show()
-    }
-
-    override fun onClickFilm(name: String) {
-        val film = presenter.getFilmInfo(name)
-        val bundle = bundleOf("film" to film)
-        bundle.putString("titleFilm", film.localized_name)
-        pageViewBinding.root.findNavController().navigate(
-            R.id.action_genreViewImpl_to_descriptionFilm, bundle
-        )
-    }
-
-    override fun onClickGenre(genre: String) {
-        presenter.changeSelectGenre(genre)
-        adapter.selectValue = presenter.selectGenre
-        presenter.drawFilms(presenter.selectGenre)
     }
 }

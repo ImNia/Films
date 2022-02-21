@@ -12,57 +12,63 @@
         android:id="@+id/descriptionFilmFragment"
         tools:context=".description.DescriptionFilmFragment">
 
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelineDesc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.4"
+            />
+
         <ImageView
             android:id="@+id/imageFilm"
-            android:layout_width="0dp"
-            android:layout_height="245dp"
-            app:layout_constraintWidth_percent="0.4"
+            android:layout_width="wrap_content"
+            android:layout_height="250dp"
+            android:contentDescription="@string/image_film"
+            android:paddingTop="20dp"
+            android:paddingBottom="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:contentDescription="@string/image_film" />
-
-        <TextView
-            android:id="@+id/descriptionFilm"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/white"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageFilm"
-            tools:text="Description"/>
+            app:layout_constraintBottom_toTopOf="@+id/guidelineDesc"
+            />
 
         <TextView
             android:id="@+id/originName"
-            android:layout_width="wrap_content"
+            style="@style/DescriptionFilm"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:layout_marginTop="24dp"
-            android:textColor="@color/white"
-            android:paddingBottom="15dp"
-            app:layout_constraintStart_toEndOf="@+id/imageFilm"
-            app:layout_constraintTop_toTopOf="parent"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toTopOf="@+id/guidelineDesc"
             tools:text="Name Film" />
 
         <TextView
             android:id="@+id/year"
-            android:layout_width="wrap_content"
-            android:layout_height="45dp"
-            android:layout_marginStart="4dp"
-            android:textColor="@color/white"
-            app:layout_constraintStart_toEndOf="@+id/imageFilm"
+            style="@style/DescriptionFilm"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
             app:layout_constraintTop_toBottomOf="@+id/originName"
             tools:text="Year" />
 
         <TextView
             android:id="@+id/rating"
-            android:layout_width="wrap_content"
-            android:layout_height="45dp"
-            android:layout_marginStart="4dp"
-            android:textColor="@color/white"
-            app:layout_constraintStart_toEndOf="@+id/imageFilm"
+            style="@style/DescriptionFilm"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:textColor="@color/title"
+            android:textSize="20sp"
+            android:textStyle="bold"
             app:layout_constraintTop_toBottomOf="@+id/year"
             tools:text="Rating" />
+
+        <TextView
+            android:id="@+id/descriptionFilm"
+            style="@style/DescriptionFilm"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/rating"
+            tools:text="Description" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
