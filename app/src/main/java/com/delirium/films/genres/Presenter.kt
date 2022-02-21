@@ -1,38 +1,42 @@
 package com.delirium.films.genres
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.delirium.films.model.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.lang.IllegalArgumentException
+import java.util.*
 
-class GenrePresenter: ViewModel() {
-    var genreView: GenreView? = null
+class Presenter : ViewModel() {
+    var pageView: PageView? = null
 
     private val filmRequest: FilmsRequest = Common.filmsRequest
 
     var selectGenre: String? = null
     var resultData: List<FilmInfo> = listOf()
 
-    fun getViewFragment(genreViewAttach: GenreView) {
-        genreView = genreViewAttach
+    fun getViewFragment(pageViewAttach: PageView) {
+        pageView = pageViewAttach
     }
 
     fun attachView() {
+        pageView?.showProgressBar()
         filmRequest.films().enqueue(object : Callback<FilmList> {
             override fun onFailure(call: Call<FilmList>, t: Throwable) {
+                pageView?.hideProgressBarWithError()
                 t.printStackTrace()
             }
+
             override fun onResponse(
                 call: Call<FilmList>,
                 response: Response<FilmList>
             ) {
                 resultData = response.body()?.films as List<FilmInfo>
                 getAllMovieList()
+                pageView?.hideProgressBar()
             }
-        } )
+        })
     }
 
     fun detachView() {
@@ -44,15 +48,21 @@ class GenrePresenter: ViewModel() {
     }
 
     private fun drawGenresAndFilms(filmsInfo: List<FilmInfo>) {
-        val genres: MutableList<String> = mutableListOf()
-        for(itemFilmsItem in filmsInfo) {
+        var genres: MutableList<String> = mutableListOf()
+        for (itemFilmsItem in filmsInfo) {
             for (itemGenre in itemFilmsItem.genres) {
                 if (!genres.contains(itemGenre))
                     genres.add(itemGenre)
             }
         }
 
-        genreView?.drawGenresAndFilms(dataSetFill(genres, filmsInfo))
+        genres = genres.map { genre ->
+            genre.replaceFirstChar {
+                if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString()
+            }
+        } as MutableList<String>
+
+        pageView?.drawGenresAndFilms(dataSetFill(genres, filmsInfo))
     }
 
     fun drawFilms(genre: String?) {
@@ -64,18 +74,18 @@ class GenrePresenter: ViewModel() {
             }
         } else {
             resultData.forEach {
-                if (it.genres.contains(genre)) {
+                if (it.genres.contains(genre.lowercase())) {
                     filmListFilter.add(it)
                 }
             }
         }
 
-        genreView?.updateFilm(dataSetFill(listOf(), filmListFilter))
+        pageView?.updateFilm(dataSetFill(listOf(), filmListFilter))
     }
 
-    fun drawDataAfterRotate(genre: String) : MutableList<ModelAdapter>{
+    fun drawDataAfterRotate(genre: String): MutableList<ModelAdapter> {
         val genres: MutableList<String> = mutableListOf()
-        for(itemFilmsItem in resultData) {
+        for (itemFilmsItem in resultData) {
             for (itemGenre in itemFilmsItem.genres) {
                 if (!genres.contains(itemGenre))
                     genres.add(itemGenre)
@@ -93,9 +103,9 @@ class GenrePresenter: ViewModel() {
         return dataSetFill(genres, filmListFilter)
     }
 
-    fun getFilmInfo(name: String) : FilmInfo {
+    fun getFilmInfo(name: String): FilmInfo {
         var currentFilm: FilmInfo? = null
-        for(item in resultData) {
+        for (item in resultData) {
             if (item.localized_name == name)
                 currentFilm = item
         }
@@ -105,28 +115,32 @@ class GenrePresenter: ViewModel() {
     private fun dataSetFill(
         genres: List<String>,
         filmsInfo: List<FilmInfo>
-    ) : MutableList<ModelAdapter> {
+    ): MutableList<ModelAdapter> {
         val dataSet = mutableListOf<ModelAdapter>()
 
-        if(genres.isNotEmpty()) {
-            dataSet.add(Titles(
-                Title(
-                    title = "GENRES",
-                    rusTitle = "Жанры"
+        if (genres.isNotEmpty()) {
+            dataSet.add(
+                Titles(
+                    Title(
+                        title = "GENRES",
+                        rusTitle = "Жанры"
+                    )
                 )
-            ))
-            genres.forEach{
+            )
+            genres.forEach {
                 dataSet.add(Genres(genre = it))
             }
 
-            dataSet.add(Titles(
-                Title(
-                    title = "FILM",
-                    rusTitle = "Фильмы"
+            dataSet.add(
+                Titles(
+                    Title(
+                        title = "FILM",
+                        rusTitle = "Фильмы"
+                    )
                 )
-            ))
+            )
         }
-        filmsInfo.forEach{
+        filmsInfo.forEach {
             dataSet.add(Films(film = it))
         }
 

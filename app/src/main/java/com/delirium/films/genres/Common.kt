@@ -1,7 +1,10 @@
 package com.delirium.films.genres
 
+import com.delirium.films.model.FilmList
+import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.http.GET
 
 object Common {
     private const val BASE_URL = "https://s3-eu-west-1.amazonaws.com/sequeniatesttask/"
@@ -13,7 +16,7 @@ object RetrofitClient {
     private var retrofit: Retrofit? = null
 
     fun getClient(baseUrl: String): Retrofit {
-        if(retrofit == null) {
+        if (retrofit == null) {
             retrofit = Retrofit.Builder()
                 .baseUrl(baseUrl)
                 .addConverterFactory(GsonConverterFactory.create())
@@ -21,4 +24,9 @@ object RetrofitClient {
         }
         return retrofit!!
     }
+}
+
+interface FilmsRequest {
+    @GET("films.json")
+    fun films(): Call<FilmList>
 }

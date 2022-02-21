@@ -15,13 +15,14 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:scaleType="fitXY"
-            android:text="Изображение не найдено"
+            android:text="@string/image_not_found"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHeight_percent="0.9"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintWidth_percent="0.9" />
+            app:layout_constraintWidth_percent="0.9"
+            android:contentDescription="@string/image_film" />
 
         <TextView
             android:id="@+id/name_film"

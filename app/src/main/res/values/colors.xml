@@ -5,9 +5,17 @@
     <color name="purple_700">#FF3700B3</color>
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
+    <color name="background_light">#FFFFFFFF</color>
     <color name="background">#111111</color>
     <color name="background_title">#212121</color>
     <color name="background_genre">#313131</color>
     <color name="background_genre_select">#84B0D5</color>
+    <color name="background_genre_select_light">#D7F6F8</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="progress_bar">#57c6de</color>
+    <color name="title">#6939D6</color>
+
+
+    <color name="red">#FF0000</color>
 </resources>

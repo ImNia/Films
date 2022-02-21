@@ -1,9 +1,12 @@
 package com.delirium.films.genres
 
+import android.app.AlertDialog
 import android.os.Bundle
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -12,45 +15,45 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.delirium.films.*
 import com.delirium.films.databinding.FilmsItemBinding
-import com.delirium.films.databinding.FragmentGenreBinding
+import com.delirium.films.databinding.FragmentPageViewBinding
 import com.delirium.films.databinding.GenreItemBinding
 import com.delirium.films.model.*
 
-class GenreViewImpl : Fragment(), GenreView, ClickElement {
+class PageViewFragment : Fragment(), PageView, ClickElement {
     private lateinit var adapter: FilmAdapter
     private lateinit var recyclerView: RecyclerView
     private lateinit var gridManager: GridLayoutManager
 
-    private lateinit var viewBinding: FragmentGenreBinding
-    private lateinit var viewBindingFilm: FilmsItemBinding
-    private lateinit var viewBindingGenre: GenreItemBinding
+    private lateinit var pageViewBinding: FragmentPageViewBinding
+    private lateinit var filmViewBinding: FilmsItemBinding
+    private lateinit var genreViewBinding: GenreItemBinding
 
-    private val genrePresenter: GenrePresenter by activityViewModels()
+    private val presenter: Presenter by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        viewBinding = FragmentGenreBinding.inflate(inflater, container, false)
+        pageViewBinding = FragmentPageViewBinding.inflate(inflater, container, false)
         gridManager = GridLayoutManager(activity, 2)
-        recyclerView = viewBinding.recycler
+        recyclerView = pageViewBinding.recycler
         recyclerView.layoutManager = gridManager
 
-        viewBindingFilm = FilmsItemBinding.inflate(inflater, container, false)
-        viewBindingGenre = GenreItemBinding.inflate(inflater, container, false)
+        filmViewBinding = FilmsItemBinding.inflate(inflater, container, false)
+        genreViewBinding = GenreItemBinding.inflate(inflater, container, false)
 
-        return viewBinding.root
+        return pageViewBinding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if (genrePresenter.genreView == null) {
-            genrePresenter.attachView()
+        if (presenter.pageView == null) {
+            presenter.attachView()
         }
-        genrePresenter.getViewFragment(this)
+        presenter.getViewFragment(this)
 
         adapter = FilmAdapter(this)
-        genrePresenter.getAllMovieList()
+        presenter.getAllMovieList()
 
         gridManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
             override fun getSpanSize(position: Int): Int {
@@ -65,10 +68,10 @@ class GenreViewImpl : Fragment(), GenreView, ClickElement {
     }
 
     override fun drawGenresAndFilms(dataSet: MutableList<ModelAdapter>) {
-        if (genrePresenter.selectGenre != null) {
-            adapter.selectValue = genrePresenter.selectGenre
+        if (presenter.selectGenre != null) {
+            adapter.selectValue = presenter.selectGenre
             adapter.prevSelectValue = null
-            val data = genrePresenter.drawDataAfterRotate(genrePresenter.selectGenre!!)
+            val data = presenter.drawDataAfterRotate(presenter.selectGenre!!)
             adapter.data = data
             adapter.updateGenre()
         } else {
@@ -81,18 +84,39 @@ class GenreViewImpl : Fragment(), GenreView, ClickElement {
         adapter.updateData(dataSet)
     }
 
+    override fun showProgressBar() {
+        pageViewBinding.progressBar.visibility = ProgressBar.VISIBLE
+    }
+
+    override fun hideProgressBar() {
+        pageViewBinding.progressBar.visibility = ProgressBar.INVISIBLE
+    }
+
+    override fun hideProgressBarWithError() {
+        val builder = AlertDialog.Builder(activity)
+        builder.setMessage(R.string.data_not_load)
+            .setCancelable(false)
+            .setPositiveButton(R.string.retry_on_error) { dialog, _ ->
+                dialog.cancel()
+                presenter.attachView()
+            }
+        val alertDialog = builder.create()
+        alertDialog.window?.setGravity(Gravity.BOTTOM)
+        alertDialog.show()
+    }
+
     override fun onClickFilm(name: String) {
-        val film = genrePresenter.getFilmInfo(name)
+        val film = presenter.getFilmInfo(name)
         val bundle = bundleOf("film" to film)
         bundle.putString("titleFilm", film.localized_name)
-        viewBinding.root.findNavController().navigate(
+        pageViewBinding.root.findNavController().navigate(
             R.id.action_genreViewImpl_to_descriptionFilm, bundle
         )
     }
 
     override fun onClickGenre(genre: String) {
-        genrePresenter.changeSelectGenre(genre)
-        adapter.selectValue = genrePresenter.selectGenre
-        genrePresenter.drawFilms(genrePresenter.selectGenre)
+        presenter.changeSelectGenre(genre)
+        adapter.selectValue = presenter.selectGenre
+        presenter.drawFilms(presenter.selectGenre)
     }
 }

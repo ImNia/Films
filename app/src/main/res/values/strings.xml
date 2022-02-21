@@ -1,5 +1,12 @@
 <resources>
     <string name="app_name">Films</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="year">Год: %1$s</string>
+    <string name="rating">Рейтинг: %1$s</string>
+
+    <string name="data_not_load">Ошибка подключения сети</string>
+    <string name="retry_on_error">Повторить</string>
+
+    <string name="image_not_found">Изображение не найдено</string>
+    <string name="image_film">Image film</string>
 </resources>

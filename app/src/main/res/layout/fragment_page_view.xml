@@ -2,11 +2,18 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    style="@style/BaseBackground"
-    android:id="@+id/fragment_genre_tmp"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".genres.GenreViewImpl">
+    tools:context=".genres.PageViewFragment">
+
+    <com.google.android.material.progressindicator.CircularProgressIndicator
+        android:id="@+id/progressBar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:indeterminate="true"
+        android:layout_gravity="center"
+        app:trackColor="@color/progress_bar"
+        />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
