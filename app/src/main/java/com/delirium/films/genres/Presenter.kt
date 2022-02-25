@@ -2,65 +2,72 @@ package com.delirium.films.genres
 
 import androidx.lifecycle.ViewModel
 import com.delirium.films.model.*
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import java.lang.IllegalArgumentException
 import java.util.*
 
 class Presenter : ViewModel() {
     var pageView: PageView? = null
 
-    private val filmRequest: FilmsRequest = Common.filmsRequest
+    private val model = Model(this)
 
     var selectGenre: String? = null
-    var resultData: List<FilmInfo> = listOf()
+        set(currentGenre) {
+            field = if (currentGenre == selectGenre) {
+                null
+            } else {
+                currentGenre
+            }
+        }
+
+    var loadingInProgress: Boolean = false
+    var dataReceived: Boolean = false
+    var gotError: Boolean = false
 
     fun setViewFragment(pageViewAttach: PageView) {
         pageView = pageViewAttach
     }
 
     fun attachView() {
-        pageView?.showProgressBar()
-        filmRequest.films().enqueue(object : Callback<FilmList> {
-            override fun onFailure(call: Call<FilmList>, t: Throwable) {
-                pageView?.progressBarWithError()
-                t.printStackTrace()
-            }
-
-            override fun onResponse(
-                call: Call<FilmList>,
-                response: Response<FilmList>
-            ) {
-                resultData = response.body()?.films as List<FilmInfo>
-                getAllMovieList()
-            }
-        })
+        loadingInProgress = true
+        model.getData()
+        getAllMovieList()
     }
 
     fun detachView() {
         super.onCleared()
     }
 
-    fun getAllMovieList() {
-        if (resultData.isNotEmpty()) pageView?.hideProgressBar()
-        drawGenresAndFilms(resultData)
+    fun responseOnFailure() {
+        gotError = true
+        getAllMovieList()
     }
 
-    private fun drawGenresAndFilms(filmsInfo: List<FilmInfo>) {
-        var genres: MutableList<String> = mutableListOf()
+    fun getAllMovieList() {
+        if (model.requestData.isNotEmpty()) {
+            pageView?.hideProgressBar()
+            dataReceived = true
+            loadingInProgress = false
+            gotError = false
+        }
+
+        if (loadingInProgress && !dataReceived && !gotError) {
+            pageView?.showProgressBar()
+        } else if (!loadingInProgress && dataReceived && !gotError) {
+            defineGenre(model.requestData)
+        } else if(gotError) {
+            pageView?.progressBarWithError()
+        }
+//        drawGenresAndFilms(model.requestData)
+    }
+
+    private fun defineGenre(filmsInfo: List<FilmInfo>) {
+        val genres: MutableList<String> = mutableListOf()
         for (itemFilmsItem in filmsInfo) {
             for (itemGenre in itemFilmsItem.genres) {
                 if (!genres.contains(itemGenre))
                     genres.add(itemGenre)
             }
         }
-
-        genres = genres.map { genre ->
-            genre.replaceFirstChar {
-                if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString()
-            }
-        } as MutableList<String>
 
         pageView?.drawGenresAndFilms(dataSetFill(genres, filmsInfo))
     }
@@ -69,11 +76,11 @@ class Presenter : ViewModel() {
         val filmListFilter: MutableList<FilmInfo> = mutableListOf()
 
         if (selectGenre == null) {
-            resultData.forEach {
+            model.requestData.forEach {
                 filmListFilter.add(it)
             }
         } else {
-            resultData.forEach {
+            model.requestData.forEach {
                 if (it.genres.contains(selectGenre!!)) {
                     filmListFilter.add(it)
                 }
@@ -85,7 +92,7 @@ class Presenter : ViewModel() {
 
     fun drawDataAfterRotate(): MutableList<ModelAdapter> {
         val genres: MutableList<String> = mutableListOf()
-        for (itemFilmsItem in resultData) {
+        for (itemFilmsItem in model.requestData) {
             for (itemGenre in itemFilmsItem.genres) {
                 if (!genres.contains(itemGenre))
                     genres.add(itemGenre)
@@ -94,7 +101,7 @@ class Presenter : ViewModel() {
 
         val filmListFilter: MutableList<FilmInfo> = mutableListOf()
 
-        resultData.forEach {
+        model.requestData.forEach {
             if (it.genres.contains(selectGenre)) {
                 filmListFilter.add(it)
             }
@@ -105,7 +112,7 @@ class Presenter : ViewModel() {
 
     fun getFilmInfo(name: String): FilmInfo {
         var currentFilm: FilmInfo? = null
-        for (item in resultData) {
+        for (item in model.requestData) {
             if (item.localized_name == name)
                 currentFilm = item
         }
@@ -145,13 +152,5 @@ class Presenter : ViewModel() {
         }
 
         return dataSet
-    }
-
-    fun changeSelectGenre(currentGenre: String) {
-        selectGenre = if (currentGenre == selectGenre) {
-            null
-        } else {
-            currentGenre
-        }
     }
 }

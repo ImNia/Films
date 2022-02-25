@@ -4,37 +4,41 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/image_page"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="180dp"
+        android:layout_height="280dp"
     >
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.8"
-        />
 
     <ImageView
         android:id="@+id/image_film"
-        style="@style/FilmItemImage"
-        android:layout_width="match_parent"
-        android:layout_height="250dp"
+        android:layout_width="156dp"
+        android:layout_height="216dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
         android:contentDescription="@string/image_film"
+
         android:scaleType="fitCenter"
         android:text="@string/image_not_found"
-        app:layout_constraintBottom_toTopOf="@+id/guideline" />
+        app:layout_constraintBottom_toTopOf="@+id/name_film"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/name_film"
         style="@style/FilmItemText"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_width="158dp"
+        android:layout_height="40dp"
         android:ellipsize="end"
+        android:fontFamily="@font/roboto_700"
         android:gravity="start"
         android:maxLines="2"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHeight_percent="0.2"
+        app:layout_constraintStart_toStartOf="parent"
         tools:text="Name Film" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

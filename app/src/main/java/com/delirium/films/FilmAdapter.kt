@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.delirium.films.databinding.FilmsItemBinding
 import com.delirium.films.databinding.GenreItemBinding
 import com.delirium.films.model.*
+import java.util.*
 
 class FilmAdapter(private val clickListener: ClickElement) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -22,14 +23,16 @@ class FilmAdapter(private val clickListener: ClickElement) :
         private lateinit var clickElement: ClickElement
 
         fun bind(item: Genres, clickGenreSelect: ClickElement) {
-            binding.genreFilm.text = item.genre
+            binding.genreFilm.text = item.genre.replaceFirstChar {
+                if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString()
+            }
             binding.genreFilm.isClickable = true
             binding.genreFilm.setOnClickListener(this)
             clickElement = clickGenreSelect
         }
 
         override fun onClick(p0: View?) {
-            clickElement.onClickGenre(binding.genreFilm.text.toString())
+            clickElement.onClickGenre(binding.genreFilm.text.toString().lowercase())
         }
     }
 
@@ -83,7 +86,7 @@ class FilmAdapter(private val clickListener: ClickElement) :
         val item = data[position]
         if (holder is GenreViewHolder && item is Genres) {
             holder.bind(item, clickListener)
-            if (item.genre.lowercase() == selectValue) {
+            if (item.genre == selectValue) {
                 holder.binding.genreFilm.background = ContextCompat.getDrawable(
                     holder.binding.genreFilm.context,
                     R.drawable.genre_selected
@@ -124,9 +127,9 @@ class FilmAdapter(private val clickListener: ClickElement) :
 
     fun updateGenre() {
         for (item in data) {
-            if (item is Genres && item.genre.lowercase() == selectValue) {
+            if (item is Genres && item.genre == selectValue) {
                 notifyItemChanged(data.indexOf(item))
-            } else if (item is Genres && item.genre.lowercase() == prevSelectValue) {
+            } else if (item is Genres && item.genre == prevSelectValue) {
                 notifyItemChanged(data.indexOf(item))
             }
         }

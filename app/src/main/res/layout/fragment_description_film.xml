@@ -22,11 +22,13 @@
 
         <ImageView
             android:id="@+id/imageFilm"
-            android:layout_width="wrap_content"
-            android:layout_height="250dp"
+            android:layout_width="132dp"
+            android:layout_height="201dp"
             android:contentDescription="@string/image_film"
             android:paddingTop="20dp"
             android:paddingBottom="10dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="24dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -36,18 +38,31 @@
         <TextView
             android:id="@+id/originName"
             style="@style/DescriptionFilm"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="30sp"
-            android:textStyle="bold"
+            android:layout_width="264dp"
+            android:layout_height="32dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:fontFamily="@font/roboto_700"
+            android:gravity="center_vertical"
+            android:lineSpacingExtra="2sp"
+            android:textSize="26sp"
+            android:textStyle="normal"
             app:layout_constraintTop_toTopOf="@+id/guidelineDesc"
             tools:text="Name Film" />
 
         <TextView
             android:id="@+id/year"
             style="@style/DescriptionFilm"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_width="128dp"
+            android:layout_height="20dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:fontFamily="@font/roboto_400"
+            android:gravity="center_vertical"
+            android:lineSpacingExtra="1sp"
+            android:textColor="@color/descYearText"
+            android:textSize="16sp"
+            android:textStyle="normal"
             app:layout_constraintTop_toBottomOf="@+id/originName"
             tools:text="Year" />
 
@@ -67,6 +82,12 @@
             style="@style/DescriptionFilm"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:fontFamily="@font/roboto_400"
+            android:gravity="center_vertical"
+            android:lineSpacingExtra="4sp"
+            android:textSize="14sp"
+            android:textStyle="normal"
             app:layout_constraintTop_toBottomOf="@+id/rating"
             tools:text="Description" />
 

@@ -10,8 +10,8 @@ object BindingAdapters {
     fun loadImageWithCorner(view: ImageView, url: String?) {
         val transform: Transformation = MaskTransformation(view.context, R.drawable.rounded_corner)
         url?.let {
-            Picasso.with(view.context).load(it).transform(transform).into(view)
-        } ?: view.setImageResource(R.drawable.not_found_foreground)
+            Picasso.with(view.context).load(it).transform(transform).error(R.drawable.not_found).into(view)
+        } ?: view.setImageResource(R.drawable.not_found)
     }
 
     @JvmStatic

@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/genreViewImpl"
         android:name="com.delirium.films.genres.PageViewFragment"
-        android:label="Главная"
+        android:label="@string/label_app"
         tools:layout="@layout/fragment_page_view" >
         <action
             android:id="@+id/action_genreViewImpl_to_descriptionFilm"

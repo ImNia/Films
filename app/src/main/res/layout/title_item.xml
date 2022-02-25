@@ -5,11 +5,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/title_item"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="40dp"
+    android:layout_alignParentTop="true"
+    android:layout_alignParentBottom="true">
 
     <TextView
         android:id="@+id/title_name"
-        style="@style/ColorTiles"
+        style="@style/TilesStyle"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:text="Title"

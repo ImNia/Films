@@ -1,8 +1,8 @@
 package com.delirium.films.genres
 
-import android.app.AlertDialog
+import android.graphics.Color
 import android.os.Bundle
-import android.view.Gravity
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,6 +18,7 @@ import com.delirium.films.databinding.FilmsItemBinding
 import com.delirium.films.databinding.FragmentPageViewBinding
 import com.delirium.films.databinding.GenreItemBinding
 import com.delirium.films.model.*
+import com.google.android.material.snackbar.Snackbar
 
 class PageViewFragment : Fragment(), PageView, ClickElement {
     private lateinit var adapter: FilmAdapter
@@ -69,6 +70,12 @@ class PageViewFragment : Fragment(), PageView, ClickElement {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        Log.i("VIEW_FRAGMENT", "onResume")
+        presenter.getAllMovieList()
+    }
+
     override fun drawGenresAndFilms(dataSet: MutableList<ModelAdapter>) {
         if (presenter.selectGenre != null) {
             adapter.selectValue = presenter.selectGenre
@@ -96,7 +103,7 @@ class PageViewFragment : Fragment(), PageView, ClickElement {
     }
 
     override fun onClickGenre(genre: String) {
-        presenter.changeSelectGenre(genre.lowercase())
+        presenter.selectGenre = genre
         adapter.selectValue = presenter.selectGenre
         presenter.drawFilterFilms()
     }
@@ -110,15 +117,13 @@ class PageViewFragment : Fragment(), PageView, ClickElement {
     }
 
     override fun progressBarWithError() {
-        val builder = AlertDialog.Builder(activity)
-        builder.setMessage(R.string.data_not_load)
-            .setCancelable(false)
-            .setPositiveButton(R.string.retry_on_error) { dialog, _ ->
-                dialog.cancel()
+        val snackBar = Snackbar.make(pageViewBinding.recycler, R.string.data_not_load, Snackbar.LENGTH_INDEFINITE)
+            .setAction(R.string.retry_on_error) {
                 presenter.attachView()
             }
-        val alertDialog = builder.create()
-        alertDialog.window?.setGravity(Gravity.BOTTOM)
-        alertDialog.show()
+//        snackBar.view.setBackgroundColor(Color.parseColor("#232323"))
+//        snackBar.setActionTextColor(Color.parseColor("#A77DFF"))
+
+        snackBar.show()
     }
 }
