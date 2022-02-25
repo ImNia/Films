@@ -1,8 +1,6 @@
 package com.delirium.films.genres
 
-import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,6 +26,8 @@ class PageViewFragment : Fragment(), PageView, ClickElement {
     private lateinit var pageViewBinding: FragmentPageViewBinding
     private lateinit var filmViewBinding: FilmsItemBinding
     private lateinit var genreViewBinding: GenreItemBinding
+
+    private var snackBar: Snackbar? = null
 
     private val presenter: Presenter by activityViewModels()
 
@@ -56,7 +56,7 @@ class PageViewFragment : Fragment(), PageView, ClickElement {
 
         adapter = FilmAdapter(this)
         adapter.selectValue = presenter.selectGenre
-        presenter.getAllMovieList()
+        presenter.changeDataForView()
 
         gridManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
             override fun getSpanSize(position: Int): Int {
@@ -68,12 +68,6 @@ class PageViewFragment : Fragment(), PageView, ClickElement {
                 }
             }
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        Log.i("VIEW_FRAGMENT", "onResume")
-        presenter.getAllMovieList()
     }
 
     override fun drawGenresAndFilms(dataSet: MutableList<ModelAdapter>) {
@@ -116,14 +110,18 @@ class PageViewFragment : Fragment(), PageView, ClickElement {
         pageViewBinding.progressBar.visibility = ProgressBar.INVISIBLE
     }
 
-    override fun progressBarWithError() {
-        val snackBar = Snackbar.make(pageViewBinding.recycler, R.string.data_not_load, Snackbar.LENGTH_INDEFINITE)
+    override fun snackBarWithError() {
+        snackBar = Snackbar.make(pageViewBinding.recycler, R.string.data_not_load, Snackbar.LENGTH_INDEFINITE)
             .setAction(R.string.retry_on_error) {
                 presenter.attachView()
             }
-//        snackBar.view.setBackgroundColor(Color.parseColor("#232323"))
-//        snackBar.setActionTextColor(Color.parseColor("#A77DFF"))
+        snackBar?.show()
+        hideProgressBar()
+    }
 
-        snackBar.show()
+    override fun hideSnackBar() {
+        snackBar?.let {
+            if (it.isShown) it.dismiss()
+        }
     }
 }

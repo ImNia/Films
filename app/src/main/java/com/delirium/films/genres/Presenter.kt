@@ -3,7 +3,6 @@ package com.delirium.films.genres
 import androidx.lifecycle.ViewModel
 import com.delirium.films.model.*
 import java.lang.IllegalArgumentException
-import java.util.*
 
 class Presenter : ViewModel() {
     var pageView: PageView? = null
@@ -30,7 +29,7 @@ class Presenter : ViewModel() {
     fun attachView() {
         loadingInProgress = true
         model.getData()
-        getAllMovieList()
+        changeDataForView()
     }
 
     fun detachView() {
@@ -39,10 +38,10 @@ class Presenter : ViewModel() {
 
     fun responseOnFailure() {
         gotError = true
-        getAllMovieList()
+        changeDataForView()
     }
 
-    fun getAllMovieList() {
+    fun changeDataForView() {
         if (model.requestData.isNotEmpty()) {
             pageView?.hideProgressBar()
             dataReceived = true
@@ -53,11 +52,11 @@ class Presenter : ViewModel() {
         if (loadingInProgress && !dataReceived && !gotError) {
             pageView?.showProgressBar()
         } else if (!loadingInProgress && dataReceived && !gotError) {
+            pageView?.hideSnackBar()
             defineGenre(model.requestData)
         } else if(gotError) {
-            pageView?.progressBarWithError()
+            pageView?.snackBarWithError()
         }
-//        drawGenresAndFilms(model.requestData)
     }
 
     private fun defineGenre(filmsInfo: List<FilmInfo>) {

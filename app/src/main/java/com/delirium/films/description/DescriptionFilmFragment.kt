@@ -39,7 +39,6 @@ class DescriptionFilmFragment : Fragment() {
             viewBinding.descriptionFilm.text = film.description
                 ?: getString(R.string.without_description)
         }
-
         return viewBinding.root
     }
 }

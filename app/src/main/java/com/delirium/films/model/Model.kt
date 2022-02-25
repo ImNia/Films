@@ -26,7 +26,7 @@ class Model(val presenter: Presenter) {
             ) {
                 requestData = response.body()?.films as List<FilmInfo>
                 Log.i("MODEL", "Data get")
-                presenter.getAllMovieList()
+                presenter.changeDataForView()
             }
         })
     }
