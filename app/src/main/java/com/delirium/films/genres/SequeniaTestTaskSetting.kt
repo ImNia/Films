@@ -6,7 +6,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 
-object Common {
+object SequeniaTestTaskSetting {
     private const val BASE_URL = "https://s3-eu-west-1.amazonaws.com/sequeniatesttask/"
     val filmsRequest: FilmsRequest
         get() = RetrofitClient.getClient(BASE_URL).create(FilmsRequest::class.java)

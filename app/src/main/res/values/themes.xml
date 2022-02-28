@@ -1,4 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <!-- Base application theme. -->
     <style name="Theme.Films" parent="Theme.MaterialComponents.DayNight">
         <!-- Primary brand color. -->
@@ -12,26 +12,9 @@
         <item name="android:fontFamily">sans-serif</item>
         <item name="android:textColorPrimary">@color/white</item>
         <item name="android:layout_gravity">center</item>
-
         <item name="snackbarStyle">@style/MySnackBar</item>
         <item name="snackbarTextViewStyle">@style/MaterialSnackbarText</item>
         <item name="snackbarButtonStyle">@style/MaterialSnackbarButton</item>
     </style>
 
-    <style name="MySnackBar" parent="Widget.MaterialComponents.Snackbar">
-        <item name="android:layout_margin">8dp</item>
-        <item name="android:background">@drawable/snackbar_rounder</item>
-    </style>
-
-    <style name="MaterialSnackbarText"
-        parent="@style/Widget.MaterialComponents.Snackbar.TextView">
-        <item name="android:textColor">@color/white</item>
-        <item name="android:textSize">15sp</item>
-    </style>
-
-    <style name="MaterialSnackbarButton"
-        parent="@style/Widget.MaterialComponents.Button.TextButton">
-        <item name="android:textColor">@color/snackBarColorAction</item>
-        <item name="android:textSize">14sp</item>
-    </style>
 </resources>

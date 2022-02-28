@@ -9,14 +9,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.delirium.films.databinding.FilmsItemBinding
 import com.delirium.films.databinding.GenreItemBinding
 import com.delirium.films.model.*
+import com.squareup.picasso.Picasso
 import java.util.*
 
 class FilmAdapter(private val clickListener: ClickElement) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     var data = mutableListOf<ModelAdapter>()
-    var selectValue: String? = null
-    var prevSelectValue: String? = null
+    var currentGenre: String? = null
 
     class GenreViewHolder(var binding: GenreItemBinding) : RecyclerView.ViewHolder(binding.root),
         View.OnClickListener {
@@ -40,7 +40,10 @@ class FilmAdapter(private val clickListener: ClickElement) :
         View.OnClickListener {
         private lateinit var clickElement: ClickElement
         fun bind(item: FilmInfo, clickElementSelect: ClickElement) {
-            BindingAdapters.loadImageWithCorner(binding.imageFilm, item.image_url)
+            item.image_url?.let {
+                Picasso.with(binding.imageFilm.context).load(it).error(R.drawable.not_found).into(binding.imageFilm)
+            } ?: binding.imageFilm.setImageResource(R.drawable.not_found)
+
             binding.nameFilm.text = item.localized_name
             binding.imageFilm.isClickable = true
             binding.imageFilm.setOnClickListener(this)
@@ -86,7 +89,7 @@ class FilmAdapter(private val clickListener: ClickElement) :
         val item = data[position]
         if (holder is GenreViewHolder && item is Genres) {
             holder.bind(item, clickListener)
-            if (item.genre == selectValue) {
+            if (item.genre == currentGenre) {
                 holder.binding.genreFilm.background = ContextCompat.getDrawable(
                     holder.binding.genreFilm.context,
                     R.drawable.genre_selected
@@ -108,33 +111,30 @@ class FilmAdapter(private val clickListener: ClickElement) :
         is Genres -> GENRE_TYPE
         is Films -> FILM_INFO_TYPE
         is Titles -> TITLE_TYPE
-        else -> throw IllegalArgumentException() //TODO class exception
+        else -> throw IllegalArgumentException()
     }
 
     override fun getItemCount(): Int {
         return data.size
     }
 
-    fun updateData(dataSet: MutableList<ModelAdapter>) {
+    fun updateData(dataSet: MutableList<ModelAdapter>, selectGenre: String?) {
         val startIndex = data.count { it is Genres || it is Titles }
         val endIndex = data.count()
         data.subList(startIndex, endIndex).clear()
         data.addAll(dataSet)
         notifyItemRangeRemoved(startIndex, endIndex - startIndex)
         notifyItemRangeChanged(startIndex, dataSet.size)
-        updateGenre()
+        updateGenre(selectGenre)
     }
 
-    fun updateGenre() {
+    fun updateGenre(selectGenre: String?) {
+        currentGenre = selectGenre
         for (item in data) {
-            if (item is Genres && item.genre == selectValue) {
-                notifyItemChanged(data.indexOf(item))
-            } else if (item is Genres && item.genre == prevSelectValue) {
+            if (item is Genres) {
                 notifyItemChanged(data.indexOf(item))
             }
         }
-
-        prevSelectValue = selectValue
     }
 
     companion object {

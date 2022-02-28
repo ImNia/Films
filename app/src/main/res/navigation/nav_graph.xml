@@ -3,20 +3,28 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/genreViewImpl">
+    app:startDestination="@id/filmsFragment">
 
     <fragment
-        android:id="@+id/genreViewImpl"
-        android:name="com.delirium.films.genres.PageViewFragment"
+        android:id="@+id/filmsFragment"
+        android:name="com.delirium.films.genres.FilmsFragment"
         android:label="@string/label_app"
-        tools:layout="@layout/fragment_page_view" >
+        tools:layout="@layout/fragment_films" >
         <action
-            android:id="@+id/action_genreViewImpl_to_descriptionFilm"
-            app:destination="@id/descriptionFilmNav" />
+            android:id="@+id/action_filmsFragment_to_FilmDescription"
+            app:destination="@id/filmDescriptionNav" />
     </fragment>
     <fragment
-        android:id="@+id/descriptionFilmNav"
-        android:name="com.delirium.films.description.DescriptionFilmFragment"
-        android:label="{titleFilm}"
-        tools:layout="@layout/fragment_description_film"/>
+        android:id="@+id/filmDescriptionNav"
+        android:name="com.delirium.films.description.FilmDescriptionFragment"
+        android:label="{titleDesc}"
+        tools:layout="@layout/fragment_film_description">
+        <argument
+            android:name="SelectedFilm"
+            app:argType="com.delirium.films.model.FilmInfo" />
+        <argument
+            android:name="titleDesc"
+            app:argType="string"
+            />
+    </fragment>
 </navigation>

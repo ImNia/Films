@@ -1,7 +1,7 @@
 package com.delirium.films.model
 
 import android.util.Log
-import com.delirium.films.genres.Common
+import com.delirium.films.genres.SequeniaTestTaskSetting
 import com.delirium.films.genres.FilmsRequest
 import com.delirium.films.genres.Presenter
 import retrofit2.Call
@@ -9,7 +9,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class Model(val presenter: Presenter) {
-    private val filmRequest: FilmsRequest = Common.filmsRequest
+    private val filmRequest: FilmsRequest = SequeniaTestTaskSetting.filmsRequest
 
     var requestData : List<FilmInfo> = listOf()
 
@@ -26,7 +26,7 @@ class Model(val presenter: Presenter) {
             ) {
                 requestData = response.body()?.films as List<FilmInfo>
                 Log.i("MODEL", "Data get")
-                presenter.changeDataForView()
+                presenter.prepareSetting()
             }
         })
     }

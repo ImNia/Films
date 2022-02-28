@@ -6,5 +6,4 @@
     <corners android:radius="2dp"/>
     <stroke android:width="2dp" android:color="@color/snackBarColor"/>
     <solid android:color="@color/snackBarColor"/>
-    <size android:height="56dp" android:width="344dp"/>
 </shape>

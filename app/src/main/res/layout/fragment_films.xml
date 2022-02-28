@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".genres.PageViewFragment">
+    tools:context=".genres.FilmsFragment">
 
     <com.google.android.material.progressindicator.CircularProgressIndicator
         android:id="@+id/progressBar"
@@ -14,11 +14,8 @@
         android:layout_gravity="center"
         app:trackColor="@color/progress_bar"
         app:indicatorColor="@color/white"
+        app:indicatorSize="48dp"
         />
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler"
@@ -26,5 +23,4 @@
             android:layout_height="match_parent"
         />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>
