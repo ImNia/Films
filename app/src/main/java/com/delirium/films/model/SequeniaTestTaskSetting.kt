@@ -8,7 +8,7 @@ import retrofit2.http.GET
 
 object SequeniaTestTaskSetting {
     private const val BASE_URL = "https://s3-eu-west-1.amazonaws.com/sequeniatesttask/"
-//    private const val BASE_URL = "https://s3-eu-west-1.amazonaws.com/1sequeniatesttask/"
+//    private const val BASE_URL = "http://127.0.0.1:8080/"
     val filmsRequest: FilmsRequest
         get() = RetrofitClient.getClient(BASE_URL).create(FilmsRequest::class.java)
 }

@@ -102,6 +102,7 @@ class FilmsFragment : Fragment(), PageView, ClickElement {
         val textError = when (statusCode) {
             Model.NOT_FOUND -> R.string.server_error
             Model.REQUEST_TIMEOUT -> R.string.request_timeout_error
+            Model.CONFLICT_VALUE -> R.string.conflict_value_error
             else -> R.string.data_not_load
         }
 
