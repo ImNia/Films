@@ -14,11 +14,11 @@
         android:layout_height="wrap_content">
 
         <com.google.android.material.appbar.MaterialToolbar
-            style="@style/AppBarStyle"
+            style="@style/Widget.MaterialComponents.Toolbar.Primary"
             android:id="@+id/toolBar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            app:subtitleTextColor="@color/white"
+
             app:titleCentered="true"
             />
 

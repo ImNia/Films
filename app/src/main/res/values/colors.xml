@@ -6,16 +6,14 @@
     <color name="background">#111111</color>
     <color name="background_title">#212121</color>
     <color name="background_genre">#313131</color>
-    <color name="background_genre_select">#84B0D5</color>
-    <color name="background_genre_select_light">#D7F6F8</color>
+    <color name="background_genre_select">#D7F6F8</color>
     <color name="white">#FFFFFFFF</color>
     <color name="black">#000000</color>
     <color name="progress_bar">#57c6de</color>
 
     <color name="snackBarColor">#232323</color>
-    <color name="snackBarColorAction">#A77DFF</color>
+    <color name="snackBarColorAction">#8868CC</color>
 
     <color name="descYearText">#4B4B4B</color>
 
-    <color name="red">#FF0000</color>
 </resources>

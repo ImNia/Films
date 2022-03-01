@@ -16,7 +16,6 @@ class FilmAdapter(private val clickListener: ClickElement) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     var data = mutableListOf<ModelAdapter>()
-    var currentGenre: String? = null
 
     class GenreViewHolder(var binding: GenreItemBinding) : RecyclerView.ViewHolder(binding.root),
         View.OnClickListener {
@@ -89,7 +88,7 @@ class FilmAdapter(private val clickListener: ClickElement) :
         val item = data[position]
         if (holder is GenreViewHolder && item is Genres) {
             holder.bind(item, clickListener)
-            if (item.genre == currentGenre) {
+            if (item.isSelected) {
                 holder.binding.genreFilm.background = ContextCompat.getDrawable(
                     holder.binding.genreFilm.context,
                     R.drawable.genre_selected
@@ -118,23 +117,22 @@ class FilmAdapter(private val clickListener: ClickElement) :
         return data.size
     }
 
-    fun updateData(dataSet: MutableList<ModelAdapter>, selectGenre: String?) {
-        val startIndex = data.count { it is Genres || it is Titles }
-        val endIndex = data.count()
-        data.subList(startIndex, endIndex).clear()
+    fun updateData(genres: MutableList<ModelAdapter>, dataSet: MutableList<ModelAdapter>) {
+        val startIndex = data.indexOf(data.first { element: ModelAdapter -> element is Films })
+        val endIndex = data.indexOf(data.last { element: ModelAdapter -> element is Films })
+        data.subList(startIndex, endIndex + 1).clear()
         data.addAll(dataSet)
         notifyItemRangeRemoved(startIndex, endIndex - startIndex)
         notifyItemRangeChanged(startIndex, dataSet.size)
-        updateGenre(selectGenre)
+        updateGenre(genres)
     }
 
-    fun updateGenre(selectGenre: String?) {
-        currentGenre = selectGenre
-        for (item in data) {
-            if (item is Genres) {
-                notifyItemChanged(data.indexOf(item))
-            }
-        }
+    private fun updateGenre(genres: MutableList<ModelAdapter>) {
+        val startIndex = data.indexOf(data.first { element: ModelAdapter -> element is Genres })
+        val endIndex = data.indexOf(data.last { element: ModelAdapter -> element is Genres })
+        data.subList(startIndex, endIndex + 1).clear()
+        data.addAll(startIndex, genres)
+        notifyItemRangeChanged(startIndex, endIndex + 1)
     }
 
     companion object {

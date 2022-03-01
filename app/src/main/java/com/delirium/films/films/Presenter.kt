@@ -1,4 +1,4 @@
-package com.delirium.films.genres
+package com.delirium.films.films
 
 import androidx.lifecycle.ViewModel
 import com.delirium.films.model.*
@@ -34,12 +34,17 @@ class Presenter : ViewModel() {
         pageView = null
     }
 
-    fun responseOnFailure() {
+    fun responseOnFailure(statusCode: Int? = null) {
         gotError = true
-        prepareSetting()
+        prepareSetting(statusCode)
     }
 
-    fun prepareSetting() {
+    fun retryLoadDataOnError() {
+        pageView?.showProgressBar()
+        model.getData()
+    }
+
+    fun prepareSetting(statusCode: Int? = null) {
         if (model.requestData.isNotEmpty()) {
             pageView?.hideProgressBar()
             dataReceived = true
@@ -54,17 +59,18 @@ class Presenter : ViewModel() {
             settingData()
         } else if(gotError) {
             pageView?.hideProgressBar()
-            pageView?.snackBarWithError()
+            pageView?.snackBarWithError(statusCode)
         }
     }
 
     fun changeCurrentGenre(genre: String) {
         selectGenre = genre
         val filterFilm = filmsFilterByGenre(model.requestData)
+        val genres = defineGenres(model.requestData)
         pageView?.showGenresAndFilms(
-            mutableListOf(),
+            setGenresInfo(genres),
             setDataFilms(filterFilm),
-            selectGenre
+            isUpdate = true
         )
     }
 
@@ -74,8 +80,8 @@ class Presenter : ViewModel() {
         val filterFilms = filmsFilterByGenre(receivedData)
         pageView?.showGenresAndFilms(
             setAdditionalInfo(genres),
-            setDataFilms(filterFilms),
-            selectGenre)
+            setDataFilms(filterFilms)
+        )
     }
 
     private fun defineGenres(filmsInfo: List<FilmInfo>) : List<String> {
@@ -116,6 +122,22 @@ class Presenter : ViewModel() {
         currentFilm?.let { pageView?.showFilmDescription(currentFilm) }
     }
 
+    private fun setGenresInfo(
+        genres: List<String>
+    ): MutableList<ModelAdapter> {
+        val dataSet = mutableListOf<ModelAdapter>()
+
+        genres.forEach {
+            if (it == selectGenre) {
+                dataSet.add(Genres(genre = it, isSelected = true))
+            } else {
+                dataSet.add(Genres(genre = it))
+            }
+        }
+
+        return dataSet
+    }
+
     private fun setAdditionalInfo(
         genres: List<String>
     ): MutableList<ModelAdapter> {
@@ -131,7 +153,11 @@ class Presenter : ViewModel() {
                 )
             )
             genres.forEach {
-                dataSet.add(Genres(genre = it))
+                if(it == selectGenre) {
+                    dataSet.add(Genres(genre = it, isSelected = true))
+                } else {
+                    dataSet.add(Genres(genre = it))
+                }
             }
 
             dataSet.add(

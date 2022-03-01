@@ -10,6 +10,8 @@
 
     <string name="data_not_load">Ошибка подключения сети</string>
     <string name="retry_on_error">Повторить</string>
+    <string name="server_error">Ошибка сервера</string>
+    <string name="request_timeout_error">Медленное соединение</string>
 
     <string name="image_not_found">Изображение не найдено</string>
     <string name="image_film">Image film</string>

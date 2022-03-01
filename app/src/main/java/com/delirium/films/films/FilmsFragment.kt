@@ -1,4 +1,4 @@
-package com.delirium.films.genres
+package com.delirium.films.films
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -65,13 +65,12 @@ class FilmsFragment : Fragment(), PageView, ClickElement {
     override fun showGenresAndFilms(
         additionalInfo: MutableList<ModelAdapter>,
         filmsInfo: MutableList<ModelAdapter>,
-        selectGenre: String?
+        isUpdate: Boolean
     ) {
-        if(additionalInfo.isEmpty()) {
-            adapter.updateData(filmsInfo, selectGenre)
+        if(isUpdate) {
+            adapter.updateData(additionalInfo, filmsInfo)
         } else {
             adapter.data = (additionalInfo + filmsInfo) as MutableList<ModelAdapter>
-            adapter.updateGenre(selectGenre)
             recyclerView.adapter = adapter
         }
     }
@@ -99,10 +98,17 @@ class FilmsFragment : Fragment(), PageView, ClickElement {
         filmsBinding.progressBar.visibility = ProgressBar.INVISIBLE
     }
 
-    override fun snackBarWithError() {
-        snackBar = Snackbar.make(filmsBinding.recycler, R.string.data_not_load, Snackbar.LENGTH_INDEFINITE)
+    override fun snackBarWithError(statusCode: Int?) {
+        val textError = when (statusCode) {
+            Model.NOT_FOUND -> R.string.server_error
+            Model.REQUEST_TIMEOUT -> R.string.request_timeout_error
+            else -> R.string.data_not_load
+        }
+
+        snackBar = Snackbar
+            .make(filmsBinding.recycler, getString(textError), Snackbar.LENGTH_INDEFINITE)
             .setAction(R.string.retry_on_error) {
-                presenter.prepareSetting()
+                presenter.retryLoadDataOnError()
             }
         snackBar?.show()
     }

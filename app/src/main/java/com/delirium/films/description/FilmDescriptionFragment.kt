@@ -41,16 +41,17 @@ class FilmDescriptionFragment : Fragment() {
 
         val genresWithYear = listOfNotNull(film.genres.joinToString(), film.year)
             .filter { element: String -> element != "" }
-        viewBinding.genresWithYear?.text = getString(
+        viewBinding.genresWithYear.text = getString(
             R.string.genres_with_year, genresWithYear.joinToString()
         )
 
-        viewBinding.rating.text = film.rating?.let {
-            getString(
+        val rating: String = getString(
                 R.string.rating,
-                String.format("%.1f", film.rating!!.toDouble()).replace(",", ".")
+                film.rating?.let {
+                    String.format("%.1f", it.toDouble()).replace(",", ".")
+                } ?: getString(R.string.rating_without_value)
             )
-        } ?: getString(R.string.rating_without_value)
+        viewBinding.rating.text = rating
 
         viewBinding.descriptionFilm.text = film.description
             ?: getString(R.string.without_description)

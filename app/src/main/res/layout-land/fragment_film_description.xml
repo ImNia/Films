@@ -11,26 +11,29 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:id="@+id/descriptionFilmFragment"
-        tools:context=".description.DescriptionFilmFragment">
+        tools:context=".description.FilmDescriptionFragment">
 
-        <ImageView
-            android:id="@+id/imageFilm"
-            android:layout_width="132dp"
-            android:layout_height="201dp"
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/imageFilmDesc"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
             android:contentDescription="@string/image_film"
-            android:paddingTop="20dp"
-            android:paddingBottom="10dp"
-            android:layout_marginTop="24dp"
-            android:layout_marginBottom="24dp"
+            android:paddingTop="24dp"
+
+            android:scaleType="centerCrop"
+            android:text="@string/image_not_found"
+            app:layout_constraintWidth_percent="0.2"
+            app:layout_constraintBottom_toTopOf="@+id/originName"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            />
+            app:shapeAppearanceOverlay="@style/roundedCorners"
+            app:srcCompat="@drawable/rounded_corner" />
 
         <TextView
             android:id="@+id/originName"
-            style="@style/DescriptionFilm"
             android:layout_width="match_parent"
-            android:layout_height="32dp"
+            android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:fontFamily="@font/roboto_700"
@@ -38,12 +41,15 @@
             android:lineSpacingExtra="2sp"
             android:textSize="26sp"
             android:textStyle="normal"
-            app:layout_constraintTop_toBottomOf="@+id/imageFilm"
+            android:textColor="@color/black"
+            android:layout_marginTop="24dp"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            app:layout_constraintTop_toBottomOf="@+id/imageFilmDesc"
             tools:text="Name Film" />
 
         <TextView
-            android:id="@+id/year"
-            style="@style/DescriptionFilm"
+            android:id="@+id/genres_with_year"
             android:layout_width="match_parent"
             android:layout_height="20dp"
             android:layout_alignParentStart="true"
@@ -54,31 +60,56 @@
             android:textColor="@color/descYearText"
             android:textSize="16sp"
             android:textStyle="normal"
+            android:layout_marginTop="8dp"
+            android:paddingStart="16dp"
+            android:paddingEnd="0dp"
             app:layout_constraintTop_toBottomOf="@+id/originName"
             tools:text="Year" />
 
         <TextView
             android:id="@+id/rating"
-            style="@style/DescriptionFilm"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_width="wrap_content"
+            android:layout_height="28dp"
+            android:fontFamily="@font/roboto_700"
             android:textColor="@color/title"
-            android:textSize="20sp"
+            android:textSize="24sp"
             android:textStyle="bold"
-            app:layout_constraintTop_toBottomOf="@+id/year"
+            android:layout_marginTop="10dp"
+            android:paddingStart="16dp"
+            android:paddingEnd="0dp"
+            app:layout_constraintTop_toBottomOf="@+id/genres_with_year"
+            app:layout_constraintStart_toStartOf="parent"
             tools:text="Rating" />
 
         <TextView
+            android:id="@+id/source_rating"
+            android:layout_width="wrap_content"
+            android:layout_height="28dp"
+            android:fontFamily="@font/roboto_500"
+            android:paddingStart="8dp"
+            android:paddingEnd="5dp"
+            android:text="@string/source_rating"
+            android:textColor="@color/title"
+            android:textSize="20sp"
+            app:layout_constraintBaseline_toBaselineOf="@+id/rating"
+            app:layout_constraintStart_toEndOf="@+id/rating" />
+
+        <TextView
             android:id="@+id/descriptionFilm"
-            style="@style/DescriptionFilm"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
+            android:layout_marginTop="13dp"
+            android:layout_marginBottom="16dp"
             android:fontFamily="@font/roboto_400"
             android:gravity="center_vertical"
             android:lineSpacingExtra="4sp"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:textColor="@color/black"
             android:textSize="14sp"
             android:textStyle="normal"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/rating"
             tools:text="Description" />
 

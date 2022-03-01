@@ -1,4 +1,4 @@
-package com.delirium.films.genres
+package com.delirium.films.films
 
 import com.delirium.films.model.FilmList
 import retrofit2.Call
@@ -8,6 +8,7 @@ import retrofit2.http.GET
 
 object SequeniaTestTaskSetting {
     private const val BASE_URL = "https://s3-eu-west-1.amazonaws.com/sequeniatesttask/"
+//    private const val BASE_URL = "https://s3-eu-west-1.amazonaws.com/1sequeniatesttask/"
     val filmsRequest: FilmsRequest
         get() = RetrofitClient.getClient(BASE_URL).create(FilmsRequest::class.java)
 }
