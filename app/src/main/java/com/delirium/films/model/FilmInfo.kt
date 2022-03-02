@@ -5,7 +5,7 @@ import java.io.Serializable
 data class FilmInfo(
     var id: Int?,
     var localized_name: String?,
-    var name: String = "No movie name",
+    var name: String?,
     var year: String?,
     var rating: String?,
     var image_url: String?,

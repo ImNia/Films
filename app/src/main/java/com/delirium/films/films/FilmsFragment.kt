@@ -71,7 +71,10 @@ class FilmsFragment : Fragment(), FilmView, ClickElement {
     override fun showFilmDescription(film: FilmInfo) {
         filmsBinding.root.findNavController().navigate(
             //TODO изменить установку заголовка
-            FilmsFragmentDirections.actionFilmsFragmentToFilmDescription(film, film.name)
+            FilmsFragmentDirections.actionFilmsFragmentToFilmDescription(
+                film,
+                film.name ?: "No movie name"
+            )
         )
     }
 
