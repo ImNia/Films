@@ -37,10 +37,8 @@ class FilmDescriptionFragment : Fragment() {
 
         viewBinding.originName.text = film.localized_name
 
-        val genresWithYear = joinGenreWithYear()
-        viewBinding.genresWithYear.text = getString(
-            R.string.genres_with_year, genresWithYear
-        )
+        val genresWithYear = joinGenreWithYear(film.genres, film.year)
+        viewBinding.genresWithYear.text = getString(R.string.genres_with_year, genresWithYear)
 
         val rating: String = getString(
                 R.string.rating,
@@ -54,12 +52,11 @@ class FilmDescriptionFragment : Fragment() {
             ?: getString(R.string.without_description)
     }
 
-    private fun joinGenreWithYear() : String {
-        var genreWithYear : MutableList<String> = mutableListOf()
-        if (film.genres.isNotEmpty()) {
-            genreWithYear = film.genres as MutableList<String>
-        }
-        film.year?.let {
+    private fun joinGenreWithYear(genres: List<String>, year: String?) : String {
+        val genreWithYear : MutableList<String> = mutableListOf()
+        genreWithYear.addAll(genres)
+
+        year?.let {
             genreWithYear.add(it + " " + getString(R.string.year))
         }
         return genreWithYear.joinToString()
