@@ -43,6 +43,7 @@ class FilmsFragment : Fragment(), FilmView, ClickElement {
         presenter.attachView(this)
 
         adapter = FilmAdapter(this)
+        recyclerView.adapter = adapter
         presenter.prepareSetting()
 
         gridManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
@@ -62,17 +63,9 @@ class FilmsFragment : Fragment(), FilmView, ClickElement {
         presenter.detachView()
     }
 
-    override fun showGenresAndFilms(
-        additionalInfo: MutableList<ModelAdapter>,
-        filmsInfo: MutableList<ModelAdapter>,
-        isUpdate: Boolean
-    ) {
-        if(isUpdate) {
-            adapter.updateData(additionalInfo, filmsInfo)
-        } else {
-            adapter.data = (additionalInfo + filmsInfo) as MutableList<ModelAdapter>
-            recyclerView.adapter = adapter
-        }
+    override fun showGenresAndFilms(filmsInfo: MutableList<ModelAdapter>) {
+        adapter.data = filmsInfo
+        adapter.notifyDataSetChanged()
     }
 
     override fun showFilmDescription(film: FilmInfo) {

@@ -9,6 +9,9 @@
     <string name="rating_without_value">-</string>
     <string name="without_description">Нет описания</string>
 
+    <string name="genre_title">Жанры</string>
+    <string name="film_title">Фильмы</string>
+
     <string name="data_not_load">Ошибка подключения сети</string>
     <string name="retry_on_error">Повторить</string>
     <string name="server_error">Ошибка сервера</string>

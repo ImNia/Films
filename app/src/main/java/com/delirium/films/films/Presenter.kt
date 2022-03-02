@@ -62,21 +62,14 @@ class Presenter : ViewModel() {
         }
         val filterFilm = filmsFilterByGenre(model.requestData)
         val genres = defineGenres(model.requestData)
-        filmView?.showGenresAndFilms(
-            setGenresInfo(genres),
-            setDataFilms(filterFilm),
-            isUpdate = true
-        )
+        filmView?.showGenresAndFilms(setDataByFilmsAndGenres(genres, filterFilm))
     }
 
     private fun settingData() {
         val receivedData = model.requestData
         val genres = defineGenres(receivedData)
         val filterFilms = filmsFilterByGenre(receivedData)
-        filmView?.showGenresAndFilms(
-            setAdditionalInfo(genres),
-            setDataFilms(filterFilms)
-        )
+        filmView?.showGenresAndFilms(setDataByFilmsAndGenres(genres, filterFilms))
     }
 
     private fun defineGenres(filmsInfo: List<FilmInfo>) : List<String> {
@@ -117,64 +110,17 @@ class Presenter : ViewModel() {
         currentFilm?.let { filmView?.showFilmDescription(currentFilm) }
     }
 
-    private fun setGenresInfo(
-        genres: List<String>
-    ): MutableList<ModelAdapter> {
-        val dataSet = mutableListOf<ModelAdapter>()
-
-        genres.forEach {
-            if (it == selectGenre) {
-                dataSet.add(Genres(genre = it, isSelected = true))
-            } else {
-                dataSet.add(Genres(genre = it))
-            }
-        }
-
-        return dataSet
-    }
-
-    private fun setAdditionalInfo(
-        genres: List<String>
-    ): MutableList<ModelAdapter> {
-        val dataSet = mutableListOf<ModelAdapter>()
-
-        if (genres.isNotEmpty()) {
-            dataSet.add(
-                Titles(
-                    Title(
-                        title = "GENRES",
-                        rusTitle = "Жанры"
-                    )
-                )
-            )
-            genres.forEach {
-                if(it == selectGenre) {
-                    dataSet.add(Genres(genre = it, isSelected = true))
-                } else {
-                    dataSet.add(Genres(genre = it))
-                }
-            }
-
-            dataSet.add(
-                Titles(
-                    Title(
-                        title = "FILM",
-                        rusTitle = "Фильмы"
-                    )
-                )
-            )
-        }
-
-        return dataSet
-    }
-
-    private fun setDataFilms(
+    private fun setDataByFilmsAndGenres(
+        genres: List<String>,
         filmsInfo: List<FilmInfo>
     ): MutableList<ModelAdapter> {
         val dataSet = mutableListOf<ModelAdapter>()
-        filmsInfo.forEach {
-            dataSet.add(Films(film = it))
-        }
+
+        dataSet.add(Titles("Жанры")) //TODO R.string.genre_title
+        genres.forEach { dataSet.add(Genres(genre = it, isSelected = it == selectGenre)) }
+        dataSet.add(Titles("Фильмы")) //TODO R.string.film_title
+
+        filmsInfo.forEach { dataSet.add(Films(film = it)) }
         return dataSet
     }
 }

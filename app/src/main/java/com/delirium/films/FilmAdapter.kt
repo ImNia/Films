@@ -60,7 +60,7 @@ class FilmAdapter(private val clickListener: ClickElement) :
         private val titleName: TextView = itemView.findViewById(R.id.title_name)
 
         fun bind(item: Titles) {
-            titleName.text = item.titleBlock.rusTitle
+            titleName.text = item.titleBlock
         }
     }
 
@@ -117,24 +117,6 @@ class FilmAdapter(private val clickListener: ClickElement) :
 
     override fun getItemCount(): Int {
         return data.size
-    }
-
-    fun updateData(genres: MutableList<ModelAdapter>, dataSet: MutableList<ModelAdapter>) {
-        val startIndex = data.indexOf(data.first { element: ModelAdapter -> element is Films })
-        val endIndex = data.indexOf(data.last { element: ModelAdapter -> element is Films })
-        data.subList(startIndex, endIndex + 1).clear()
-        data.addAll(dataSet)
-        notifyItemRangeRemoved(startIndex, endIndex - startIndex)
-        notifyItemRangeChanged(startIndex, dataSet.size)
-        updateGenre(genres)
-    }
-
-    private fun updateGenre(genres: MutableList<ModelAdapter>) {
-        val startIndex = data.indexOf(data.first { element: ModelAdapter -> element is Genres })
-        val endIndex = data.indexOf(data.last { element: ModelAdapter -> element is Genres })
-        data.subList(startIndex, endIndex + 1).clear()
-        data.addAll(startIndex, genres)
-        notifyItemRangeChanged(startIndex, endIndex + 1)
     }
 
     companion object {
