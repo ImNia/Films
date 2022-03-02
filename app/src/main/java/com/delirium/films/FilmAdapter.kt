@@ -35,8 +35,8 @@ class FilmAdapter(private val clickListener: ClickElement) :
         }
     }
 
-    class FilmViewHolder(private var binding: FilmsItemBinding) : RecyclerView.ViewHolder(binding.root),
-        View.OnClickListener {
+    class FilmViewHolder(private var binding: FilmsItemBinding)
+        : RecyclerView.ViewHolder(binding.root), View.OnClickListener {
         private lateinit var clickElement: ClickElement
         fun bind(item: FilmInfo, clickElementSelect: ClickElement) {
 

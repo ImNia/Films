@@ -8,14 +8,14 @@
     >
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_gravity="start"
         android:id="@+id/descriptionFilmFragment"
         tools:context=".description.FilmDescriptionFragment">
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/imageFilmDesc"
-            android:layout_width="0dp"
+            android:layout_width="132dp"
             android:layout_height="wrap_content"
             android:adjustViewBounds="true"
             android:contentDescription="@string/image_film"
@@ -23,7 +23,6 @@
 
             android:scaleType="centerCrop"
             android:text="@string/image_not_found"
-            app:layout_constraintWidth_percent="0.2"
             app:layout_constraintBottom_toTopOf="@+id/originName"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

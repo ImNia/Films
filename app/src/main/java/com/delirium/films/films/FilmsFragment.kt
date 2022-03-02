@@ -99,12 +99,13 @@ class FilmsFragment : Fragment(), FilmView, ClickElement {
         filmsBinding.progressBar.visibility = ProgressBar.INVISIBLE
     }
 
-    override fun snackBarWithError(statusCode: Int?) {
+    override fun snackBarWithError(statusCode: StatusCode?) {
         val textError = when (statusCode) {
-            Model.NOT_FOUND -> R.string.server_error
-            Model.REQUEST_TIMEOUT -> R.string.request_timeout_error
-            Model.CONFLICT_VALUE -> R.string.conflict_value_error
-            else -> R.string.data_not_load
+            StatusCode.NOT_FOUND -> R.string.server_error
+            StatusCode.REQUEST_TIMEOUT -> R.string.request_timeout_error
+            StatusCode.CONFLICT_VALUE -> R.string.conflict_value_error
+            StatusCode.NOT_CONNECT -> R.string.data_not_load
+            else -> R.string.unknown_error
         }
 
         snackBar = Snackbar

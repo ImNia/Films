@@ -26,7 +26,7 @@ class Presenter : ViewModel() {
         filmView = null
     }
 
-    private fun changeStateView(statusCode: Int?) = when {
+    private fun changeStateView(statusCode: StatusCode?) = when {
         loadingInProgress -> filmView?.showProgressBar()
         dataReceived -> {
             filmView?.hideSnackBar()
@@ -39,7 +39,7 @@ class Presenter : ViewModel() {
         else -> Unit
     }
 
-    fun responseOnFailure(statusCode: Int? = null) {
+    fun responseOnFailure(statusCode: StatusCode? = null) {
         gotError = true
         loadingInProgress = false
         loadData(statusCode)
@@ -52,7 +52,7 @@ class Presenter : ViewModel() {
         model.getData()
     }
 
-    fun loadData(statusCode: Int? = null) {
+    fun loadData(statusCode: StatusCode? = null) {
         if (model.requestData.isNotEmpty()) {
             filmView?.hideProgressBar()
             dataReceived = true

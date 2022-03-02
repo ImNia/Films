@@ -1,14 +1,12 @@
 package com.delirium.films.model
 
-import com.delirium.films.films.SequeniaTestTaskSetting
-import com.delirium.films.films.FilmsRequest
 import com.delirium.films.films.Presenter
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.lang.NumberFormatException
 import java.net.SocketTimeoutException
-import java.net.UnknownServiceException
+import java.net.UnknownHostException
 
 class Model(val presenter: Presenter) {
     private val filmRequest: FilmsRequest = SequeniaTestTaskSetting.filmsRequest
@@ -19,10 +17,13 @@ class Model(val presenter: Presenter) {
         filmRequest.films().enqueue(object : Callback<FilmList> {
             override fun onFailure(call: Call<FilmList>, t: Throwable) {
                 when (t) {
-                    is SocketTimeoutException -> presenter.responseOnFailure(REQUEST_TIMEOUT)
-                    is NumberFormatException,
-                    is UnknownServiceException -> presenter.responseOnFailure(CONFLICT_VALUE)
-                    else -> presenter.responseOnFailure()
+                    is SocketTimeoutException ->
+                        presenter.responseOnFailure(StatusCode.REQUEST_TIMEOUT)
+                    is NumberFormatException ->
+                        presenter.responseOnFailure(StatusCode.CONFLICT_VALUE)
+                    is UnknownHostException ->
+                        presenter.responseOnFailure(StatusCode.NOT_CONNECT)
+                    else -> presenter.responseOnFailure(StatusCode.SOME_ERROR)
                 }
                 t.printStackTrace()
             }
@@ -31,20 +32,13 @@ class Model(val presenter: Presenter) {
                 call: Call<FilmList>,
                 response: Response<FilmList>
             ) {
-                if(response.code() == OK) {
+                if(response.isSuccessful) {
                     requestData = response.body()?.films as List<FilmInfo>
                     presenter.loadData()
-                } else if(response.code() == NOT_FOUND) {
-                    presenter.responseOnFailure(response.code())
+                } else {
+                    presenter.responseOnFailure(StatusCode.NOT_FOUND)
                 }
             }
         })
-    }
-
-    companion object {
-        const val NOT_FOUND = 404
-        const val OK = 200
-        const val REQUEST_TIMEOUT = 408
-        const val CONFLICT_VALUE = 409
     }
 }
