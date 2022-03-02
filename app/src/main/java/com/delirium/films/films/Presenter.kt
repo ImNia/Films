@@ -5,17 +5,8 @@ import com.delirium.films.model.*
 
 class Presenter : ViewModel() {
     private var filmView: FilmView? = null
-
+    private var selectGenre: String? = null
     private val model = Model(this)
-
-    var selectGenre: String? = null
-        set(currentGenre) {
-            field = if (currentGenre == selectGenre) {
-                null
-            } else {
-                currentGenre
-            }
-        }
 
     var loadingInProgress: Boolean = false
     var dataReceived: Boolean = false
@@ -64,7 +55,11 @@ class Presenter : ViewModel() {
     }
 
     fun changeCurrentGenre(genre: String) {
-        selectGenre = genre
+        selectGenre = if (genre == selectGenre) {
+            null
+        } else {
+            genre
+        }
         val filterFilm = filmsFilterByGenre(model.requestData)
         val genres = defineGenres(model.requestData)
         filmView?.showGenresAndFilms(
