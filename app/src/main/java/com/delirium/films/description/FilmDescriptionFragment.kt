@@ -40,13 +40,8 @@ class FilmDescriptionFragment : Fragment() {
         val genresWithYear = joinGenreWithYear(film.genres, film.year)
         viewBinding.genresWithYear.text = getString(R.string.genres_with_year, genresWithYear)
 
-        val rating: String = getString(
-                R.string.rating,
-                film.rating?.let {
-                    String.format("%.1f", it.toDouble()).replace(",", ".")
-                } ?: getString(R.string.rating_without_value)
-            )
-        viewBinding.rating.text = rating
+        val rating: String = transformRatingToString(film.rating)
+        viewBinding.rating.text = getString(R.string.rating, rating)
 
         viewBinding.descriptionFilm.text = film.description
             ?: getString(R.string.without_description)
@@ -62,6 +57,9 @@ class FilmDescriptionFragment : Fragment() {
         return genreWithYear.joinToString()
     }
 
+    private fun transformRatingToString(rating: String?) = rating?.let {
+            String.format("%.1f", it.toDouble()).replace(",", ".")
+        } ?: getString(R.string.rating_without_value)
 
     override fun onDestroyView() {
         super.onDestroyView()
