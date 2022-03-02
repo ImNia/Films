@@ -5,8 +5,7 @@ import com.delirium.films.model.ModelAdapter
 
 interface FilmView {
     fun showGenresAndFilms(
-        //TODO rename
-        filmsInfo: MutableList<ModelAdapter>
+        dataToShow: MutableList<ModelAdapter>
     )
     fun showFilmDescription(film: FilmInfo)
     fun showProgressBar()

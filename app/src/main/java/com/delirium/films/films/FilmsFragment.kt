@@ -16,24 +16,26 @@ import com.delirium.films.model.*
 import com.google.android.material.snackbar.Snackbar
 
 class FilmsFragment : Fragment(), FilmView, ClickElement {
-    private lateinit var adapter: FilmAdapter
-    private lateinit var recyclerView: RecyclerView
+    private var _adapter: FilmAdapter? = null
+    private val adapter get() = _adapter!!
+    private var recyclerView: RecyclerView? = null
+
     private lateinit var gridManager: GridLayoutManager
 
-    private lateinit var filmsBinding: FragmentFilmsBinding
+    private var _filmsBinding: FragmentFilmsBinding? = null
+    private val filmsBinding get() = _filmsBinding!!
 
     private var snackBar: Snackbar? = null
-
     private val presenter: Presenter by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        filmsBinding = FragmentFilmsBinding.inflate(inflater, container, false)
+        _filmsBinding = FragmentFilmsBinding.inflate(inflater, container, false)
         gridManager = GridLayoutManager(activity, 2)
         recyclerView = filmsBinding.recycler
-        recyclerView.layoutManager = gridManager
+        recyclerView?.layoutManager = gridManager
 
         return filmsBinding.root
     }
@@ -42,8 +44,8 @@ class FilmsFragment : Fragment(), FilmView, ClickElement {
         super.onViewCreated(view, savedInstanceState)
         presenter.attachView(this)
 
-        adapter = FilmAdapter(this)
-        recyclerView.adapter = adapter
+        _adapter = FilmAdapter(this)
+        recyclerView?.adapter = adapter
         presenter.loadData()
 
         gridManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
@@ -61,10 +63,13 @@ class FilmsFragment : Fragment(), FilmView, ClickElement {
     override fun onDestroyView() {
         super.onDestroyView()
         presenter.detachView()
+        _filmsBinding = null
+        recyclerView = null
+        _adapter = null
     }
 
-    override fun showGenresAndFilms(filmsInfo: MutableList<ModelAdapter>) {
-        adapter.data = filmsInfo
+    override fun showGenresAndFilms(dataToShow: MutableList<ModelAdapter>) {
+        adapter.data = dataToShow
         adapter.notifyDataSetChanged()
     }
 
