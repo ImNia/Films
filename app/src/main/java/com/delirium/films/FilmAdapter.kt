@@ -39,9 +39,11 @@ class FilmAdapter(private val clickListener: ClickElement) :
         View.OnClickListener {
         private lateinit var clickElement: ClickElement
         fun bind(item: FilmInfo, clickElementSelect: ClickElement) {
-            item.image_url?.let {
-                Picasso.with(binding.imageFilm.context).load(it).error(R.drawable.not_found).into(binding.imageFilm)
-            } ?: binding.imageFilm.setImageResource(R.drawable.not_found)
+
+            Picasso.with(binding.imageFilm.context)
+                .load(item.image_url)
+                .placeholder(R.drawable.not_found)
+                .into(binding.imageFilm)
 
             binding.nameFilm.text = item.localized_name
             binding.imageFilm.isClickable = true

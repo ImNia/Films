@@ -2,7 +2,8 @@
     <string name="app_name">Films</string>
     <string name="label_app">Фильмы</string>
 
-    <string name="genres_with_year">%1$s год</string>
+    <string name="genres_with_year">%1$s</string>
+    <string name="year">год</string>
     <string name="rating">%1$s</string>
     <string name="source_rating">КиноПоиск</string>
     <string name="rating_without_value">-</string>

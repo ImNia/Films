@@ -30,19 +30,16 @@ class FilmDescriptionFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        film.image_url?.let {
-            Picasso.with(viewBinding.imageFilmDesc.context)
-                .load(it)
-                .error(R.drawable.not_found)
+        Picasso.with(viewBinding.imageFilmDesc.context)
+                .load(film.image_url)
+                .placeholder(R.drawable.not_found)
                 .into(viewBinding.imageFilmDesc)
-        } ?: viewBinding.imageFilmDesc.setImageResource(R.drawable.not_found)
 
         viewBinding.originName.text = film.localized_name
 
-        val genresWithYear = listOfNotNull(film.genres.joinToString(), film.year)
-            .filter { element: String -> element != "" }
+        val genresWithYear = joinGenreWithYear()
         viewBinding.genresWithYear.text = getString(
-            R.string.genres_with_year, genresWithYear.joinToString()
+            R.string.genres_with_year, genresWithYear
         )
 
         val rating: String = getString(
@@ -55,6 +52,17 @@ class FilmDescriptionFragment : Fragment() {
 
         viewBinding.descriptionFilm.text = film.description
             ?: getString(R.string.without_description)
+    }
+
+    private fun joinGenreWithYear() : String {
+        var genreWithYear : MutableList<String> = mutableListOf()
+        if (film.genres.isNotEmpty()) {
+            genreWithYear = film.genres as MutableList<String>
+        }
+        film.year?.let {
+            genreWithYear.add(it + " " + getString(R.string.year))
+        }
+        return genreWithYear.joinToString()
     }
 
 
