@@ -33,7 +33,7 @@ class Model(val presenter: Presenter) {
             ) {
                 if(response.code() == OK) {
                     requestData = response.body()?.films as List<FilmInfo>
-                    presenter.prepareSetting()
+                    presenter.loadData()
                 } else if(response.code() == NOT_FOUND) {
                     presenter.responseOnFailure(response.code())
                 }

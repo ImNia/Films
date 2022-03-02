@@ -44,7 +44,7 @@ class FilmsFragment : Fragment(), FilmView, ClickElement {
 
         adapter = FilmAdapter(this)
         recyclerView.adapter = adapter
-        presenter.prepareSetting()
+        presenter.loadData()
 
         gridManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
             override fun getSpanSize(position: Int): Int {
@@ -73,7 +73,7 @@ class FilmsFragment : Fragment(), FilmView, ClickElement {
             //TODO изменить установку заголовка
             FilmsFragmentDirections.actionFilmsFragmentToFilmDescription(
                 film,
-                film.name ?: "No movie name"
+                film.name ?: getString(R.string.no_title)
             )
         )
     }

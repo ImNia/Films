@@ -15,6 +15,7 @@ class Presenter : ViewModel() {
     init {
         loadingInProgress = true
         model.getData()
+        changeStateView(null)
     }
 
     fun attachView(filmView: FilmView) {
@@ -25,17 +26,33 @@ class Presenter : ViewModel() {
         filmView = null
     }
 
+    private fun changeStateView(statusCode: Int?) = when {
+        loadingInProgress -> filmView?.showProgressBar()
+        dataReceived -> {
+            filmView?.hideSnackBar()
+            settingData()
+        }
+        gotError -> {
+            filmView?.hideProgressBar()
+            filmView?.snackBarWithError(statusCode)
+        }
+        else -> Unit
+    }
+
     fun responseOnFailure(statusCode: Int? = null) {
         gotError = true
-        prepareSetting(statusCode)
+        loadingInProgress = false
+        loadData(statusCode)
     }
 
     fun retryLoadDataOnError() {
         filmView?.showProgressBar()
+        gotError = false
+        loadingInProgress = true
         model.getData()
     }
 
-    fun prepareSetting(statusCode: Int? = null) {
+    fun loadData(statusCode: Int? = null) {
         if (model.requestData.isNotEmpty()) {
             filmView?.hideProgressBar()
             dataReceived = true
@@ -43,15 +60,7 @@ class Presenter : ViewModel() {
             gotError = false
         }
 
-        if (loadingInProgress && !dataReceived && !gotError) {
-            filmView?.showProgressBar()
-        } else if (!loadingInProgress && dataReceived && !gotError) {
-            filmView?.hideSnackBar()
-            settingData()
-        } else if(gotError) {
-            filmView?.hideProgressBar()
-            filmView?.snackBarWithError(statusCode)
-        }
+        changeStateView(statusCode)
     }
 
     fun changeCurrentGenre(genre: String) {
