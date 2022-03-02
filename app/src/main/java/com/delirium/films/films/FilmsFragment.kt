@@ -15,7 +15,7 @@ import com.delirium.films.databinding.FragmentFilmsBinding
 import com.delirium.films.model.*
 import com.google.android.material.snackbar.Snackbar
 
-class FilmsFragment : Fragment(), PageView, ClickElement {
+class FilmsFragment : Fragment(), FilmView, ClickElement {
     private lateinit var adapter: FilmAdapter
     private lateinit var recyclerView: RecyclerView
     private lateinit var gridManager: GridLayoutManager

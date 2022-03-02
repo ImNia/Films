@@ -3,7 +3,7 @@ package com.delirium.films.films
 import com.delirium.films.model.FilmInfo
 import com.delirium.films.model.ModelAdapter
 
-interface PageView {
+interface FilmView {
     fun showGenresAndFilms(
         additionalInfo: MutableList<ModelAdapter>,
         filmsInfo: MutableList<ModelAdapter>,

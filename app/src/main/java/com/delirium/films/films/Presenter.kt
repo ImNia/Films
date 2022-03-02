@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import com.delirium.films.model.*
 
 class Presenter : ViewModel() {
-    var pageView: PageView? = null
+    private var filmView: FilmView? = null
 
     private val model = Model(this)
 
@@ -26,12 +26,12 @@ class Presenter : ViewModel() {
         model.getData()
     }
 
-    fun attachView(pageViewAttach: PageView) {
-        pageView = pageViewAttach
+    fun attachView(filmView: FilmView) {
+        this.filmView = filmView
     }
 
     fun detachView() {
-        pageView = null
+        filmView = null
     }
 
     fun responseOnFailure(statusCode: Int? = null) {
@@ -40,26 +40,26 @@ class Presenter : ViewModel() {
     }
 
     fun retryLoadDataOnError() {
-        pageView?.showProgressBar()
+        filmView?.showProgressBar()
         model.getData()
     }
 
     fun prepareSetting(statusCode: Int? = null) {
         if (model.requestData.isNotEmpty()) {
-            pageView?.hideProgressBar()
+            filmView?.hideProgressBar()
             dataReceived = true
             loadingInProgress = false
             gotError = false
         }
 
         if (loadingInProgress && !dataReceived && !gotError) {
-            pageView?.showProgressBar()
+            filmView?.showProgressBar()
         } else if (!loadingInProgress && dataReceived && !gotError) {
-            pageView?.hideSnackBar()
+            filmView?.hideSnackBar()
             settingData()
         } else if(gotError) {
-            pageView?.hideProgressBar()
-            pageView?.snackBarWithError(statusCode)
+            filmView?.hideProgressBar()
+            filmView?.snackBarWithError(statusCode)
         }
     }
 
@@ -67,7 +67,7 @@ class Presenter : ViewModel() {
         selectGenre = genre
         val filterFilm = filmsFilterByGenre(model.requestData)
         val genres = defineGenres(model.requestData)
-        pageView?.showGenresAndFilms(
+        filmView?.showGenresAndFilms(
             setGenresInfo(genres),
             setDataFilms(filterFilm),
             isUpdate = true
@@ -78,7 +78,7 @@ class Presenter : ViewModel() {
         val receivedData = model.requestData
         val genres = defineGenres(receivedData)
         val filterFilms = filmsFilterByGenre(receivedData)
-        pageView?.showGenresAndFilms(
+        filmView?.showGenresAndFilms(
             setAdditionalInfo(genres),
             setDataFilms(filterFilms)
         )
@@ -119,7 +119,7 @@ class Presenter : ViewModel() {
             if (item.localized_name == name)
                 currentFilm = item
         }
-        currentFilm?.let { pageView?.showFilmDescription(currentFilm) }
+        currentFilm?.let { filmView?.showFilmDescription(currentFilm) }
     }
 
     private fun setGenresInfo(
