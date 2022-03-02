@@ -60,27 +60,18 @@ class Presenter : ViewModel() {
         } else {
             genre
         }
-        val filterFilm = filmsFilterByGenre(model.requestData)
-        val genres = defineGenres(model.requestData)
-        filmView?.showGenresAndFilms(setDataByFilmsAndGenres(genres, filterFilm))
+        settingData()
     }
 
     private fun settingData() {
         val receivedData = model.requestData
         val genres = defineGenres(receivedData)
-        filmView?.showGenresAndFilms(setDataByFilmsAndGenres(genres, receivedData))
+        val filterFilm = filmsFilterByGenre(receivedData)
+        filmView?.showGenresAndFilms(setDataByFilmsAndGenres(genres, filterFilm))
     }
 
-    private fun defineGenres(filmsInfo: List<FilmInfo>) : List<String> {
-        val genres: MutableList<String> = mutableListOf()
-        for (itemFilmsItem in filmsInfo) {
-            for (itemGenre in itemFilmsItem.genres) {
-                if (!genres.contains(itemGenre))
-                    genres.add(itemGenre)
-            }
-        }
-        return genres
-    }
+    private fun defineGenres(filmsInfo: List<FilmInfo>) =
+        filmsInfo.flatMap { it.genres }.distinct().sorted()
 
     private fun filmsFilterByGenre(filmsInfo: List<FilmInfo>) = if(selectGenre != null) {
         filmsInfo.filter { film: FilmInfo -> film.genres.contains(selectGenre) }
