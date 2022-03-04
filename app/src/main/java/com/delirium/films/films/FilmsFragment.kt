@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -26,7 +27,7 @@ class FilmsFragment : Fragment(), FilmView, ClickElement {
     private val filmsBinding get() = _filmsBinding!!
 
     private var snackBar: Snackbar? = null
-    private val presenter: Presenter by activityViewModels()
+    private val filmsPresenter: FilmsPresenter by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,11 +43,11 @@ class FilmsFragment : Fragment(), FilmView, ClickElement {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        presenter.attachView(this)
+        filmsPresenter.attachView(this)
 
         _adapter = FilmAdapter(this)
         recyclerView?.adapter = adapter
-        presenter.loadData()
+        filmsPresenter.loadData()
 
         gridManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
             override fun getSpanSize(position: Int): Int {
@@ -58,11 +59,16 @@ class FilmsFragment : Fragment(), FilmView, ClickElement {
                 }
             }
         }
+
+        setFragmentResultListener("SHOW_FILM") { key, bundle ->
+            val filmName: String = bundle.getString("filmName")!!
+            filmsPresenter.goToDescriptionFilm(filmName)
+        }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        presenter.detachView()
+        filmsPresenter.detachView()
         _filmsBinding = null
         recyclerView = null
         _adapter = null
@@ -78,17 +84,22 @@ class FilmsFragment : Fragment(), FilmView, ClickElement {
             //TODO изменить установку заголовка
             FilmsFragmentDirections.actionFilmsFragmentToFilmDescription(
                 film,
-                film.name ?: getString(R.string.no_title)
+                film.name ?: getString(R.string.no_title),
+                filmsPresenter
             )
         )
     }
 
-    override fun onClickFilm(name: String) {
-        presenter.goToDescriptionFilm(name)
+    override fun onClickFilm(name: String, isFavorite: Boolean) {
+        if (isFavorite) {
+            filmsPresenter.setFilmInFavorite(name)
+        } else {
+            filmsPresenter.goToDescriptionFilm(name)
+        }
     }
 
     override fun onClickGenre(genre: String) {
-        presenter.changeCurrentGenre(genre)
+        filmsPresenter.changeCurrentGenre(genre)
     }
 
     override fun showProgressBar() {
@@ -111,7 +122,7 @@ class FilmsFragment : Fragment(), FilmView, ClickElement {
         snackBar = Snackbar
             .make(filmsBinding.recycler, getString(textError), Snackbar.LENGTH_INDEFINITE)
             .setAction(R.string.retry_on_error) {
-                presenter.retryLoadDataOnError()
+                filmsPresenter.retryLoadDataOnError()
             }
         snackBar?.show()
     }

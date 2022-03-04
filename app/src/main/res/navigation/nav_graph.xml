@@ -24,7 +24,15 @@
             app:argType="com.delirium.films.model.FilmInfo" />
         <argument
             android:name="titleDesc"
-            app:argType="string"
-            />
+            app:argType="string" />
+        <argument
+            android:name="presenter"
+            app:argType="com.delirium.films.films.FilmsPresenter" />
+    </fragment>
+    <fragment
+        android:id="@+id/favoriteFragment"
+        android:name="com.delirium.films.favorite.FavoriteFragment"
+        android:label="@string/favorite"
+        tools:layout="@layout/fragment_favorite" >
     </fragment>
 </navigation>

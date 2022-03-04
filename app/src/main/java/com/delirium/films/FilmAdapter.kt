@@ -1,5 +1,6 @@
 package com.delirium.films
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -35,8 +36,8 @@ class FilmAdapter(private val clickListener: ClickElement) :
         }
     }
 
-    class FilmViewHolder(private var binding: FilmsItemBinding)
-        : RecyclerView.ViewHolder(binding.root), View.OnClickListener {
+    class FilmViewHolder(private var binding: FilmsItemBinding) :
+        RecyclerView.ViewHolder(binding.root), View.OnClickListener {
         private lateinit var clickElement: ClickElement
         fun bind(item: FilmInfo, clickElementSelect: ClickElement) {
 
@@ -48,11 +49,20 @@ class FilmAdapter(private val clickListener: ClickElement) :
             binding.nameFilm.text = item.localized_name
             binding.imageFilm.isClickable = true
             binding.imageFilm.setOnClickListener(this)
+
+            if(item.isFavorite) binding.favoriteIndicator.setImageResource(R.drawable.ic_favorite_black_24dp)
+            else binding.favoriteIndicator.setImageResource(R.drawable.ic_favorite_border_black_24dp)
+            binding.favoriteIndicator.isClickable = true
+            binding.favoriteIndicator.setOnClickListener(this)
+
             clickElement = clickElementSelect
         }
 
         override fun onClick(p0: View?) {
-            clickElement.onClickFilm(binding.nameFilm.text.toString())
+            clickElement.onClickFilm(
+                binding.nameFilm.text.toString(),
+                binding.favoriteIndicator.id == p0?.id
+            )
         }
     }
 
@@ -127,6 +137,6 @@ class FilmAdapter(private val clickListener: ClickElement) :
 }
 
 interface ClickElement {
-    fun onClickFilm(name: String)
+    fun onClickFilm(name: String, isFavorite: Boolean)
     fun onClickGenre(genre: String)
 }

@@ -22,4 +22,9 @@
 
     <string name="image_not_found">Изображение не найдено</string>
     <string name="image_film">Image film</string>
+
+    <string name="favorite">Избранное</string>
+    <string name="not_films_favorite">Пока нет фильмов</string>
+    <string name="go_to_film_favorite">Перейти к фильмам</string>
+    <string name="content_description_favorite">Перейти к фильмам</string>
 </resources>

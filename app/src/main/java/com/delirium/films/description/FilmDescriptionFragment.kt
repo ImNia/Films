@@ -11,12 +11,12 @@ import com.delirium.films.databinding.FragmentFilmDescriptionBinding
 import com.squareup.picasso.Picasso
 
 class FilmDescriptionFragment : Fragment() {
-
     private var _viewBinding: FragmentFilmDescriptionBinding? = null
     private val viewBinding get() = _viewBinding!!
 
     private val args by navArgs<FilmDescriptionFragmentArgs>()
     private val film by lazy { args.selectedFilm }
+    private val presenter by lazy { args.presenter }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -45,6 +45,24 @@ class FilmDescriptionFragment : Fragment() {
 
         viewBinding.descriptionFilm.text = film.description
             ?: getString(R.string.without_description)
+
+        setIconFavorite()
+
+        viewBinding.favoriteIndicator.setOnClickListener {
+            setFilmInFavorite()
+        }
+    }
+
+    private fun setFilmInFavorite() {
+        film.isFavorite = presenter.setFilmInFavorite(film.localized_name!!) == true
+        setIconFavorite()
+    }
+
+    private fun setIconFavorite() {
+        if(film.isFavorite)
+            viewBinding.favoriteIndicator.setImageResource(R.drawable.ic_favorite_black_24dp)
+        else
+            viewBinding.favoriteIndicator.setImageResource(R.drawable.ic_favorite_border_black_24dp)
     }
 
     private fun joinGenreWithYear(genres: List<String>, year: String?) : String {

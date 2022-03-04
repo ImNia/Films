@@ -10,5 +10,6 @@ data class FilmInfo(
     var rating: String?,
     var image_url: String?,
     var description: String?,
-    var genres: List<String>
+    var genres: List<String>,
+    var isFavorite: Boolean = false
 ) : Serializable

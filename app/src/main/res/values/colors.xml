@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="title">#6936D6</color>
+    <color name="base_color">#6936D6</color>
 
     <color name="background_light">#FFFFFFFF</color>
     <color name="background">#111111</color>
@@ -15,5 +15,6 @@
     <color name="snackBarColorAction">#8868CC</color>
 
     <color name="descYearText">#4B4B4B</color>
+    <color name="indicator">#6936D6</color>
 
 </resources>

@@ -2,15 +2,16 @@ package com.delirium.films.films
 
 import androidx.lifecycle.ViewModel
 import com.delirium.films.model.*
+import java.io.Serializable
 
-class Presenter : ViewModel() {
+class FilmsPresenter : ViewModel(), Serializable {
     private var filmView: FilmView? = null
     private var selectGenre: String? = null
     private val model = Model(this)
 
-    var loadingInProgress: Boolean = false
-    var dataReceived: Boolean = false
-    var gotError: Boolean = false
+    private var loadingInProgress: Boolean = false
+    private var dataReceived: Boolean = false
+    private var gotError: Boolean = false
 
     init {
         loadingInProgress = true
@@ -53,7 +54,7 @@ class Presenter : ViewModel() {
     }
 
     fun loadData(statusCode: StatusCode? = null) {
-        if (model.requestData.isNotEmpty()) {
+        if (model.getRequestData().isNotEmpty()) {
             filmView?.hideProgressBar()
             dataReceived = true
             loadingInProgress = false
@@ -73,7 +74,7 @@ class Presenter : ViewModel() {
     }
 
     private fun settingData() {
-        val receivedData = model.requestData
+        val receivedData = model.getRequestData()
         val genres = defineGenres(receivedData)
         val filterFilm = filmsFilterByGenre(receivedData)
         filmView?.showGenresAndFilms(setDataByFilmsAndGenres(genres, filterFilm))
@@ -90,11 +91,11 @@ class Presenter : ViewModel() {
 
     fun goToDescriptionFilm(name: String) {
         var currentFilm: FilmInfo? = null
-        for (item in model.requestData) {
-            if (item.localized_name == name)
-                currentFilm = item
+
+        model.getRequestData().forEach {
+            if (it.localized_name == name) currentFilm = it
         }
-        currentFilm?.let { filmView?.showFilmDescription(currentFilm) }
+        currentFilm?.let { filmView?.showFilmDescription(it) }
     }
 
     private fun setDataByFilmsAndGenres(
@@ -109,5 +110,25 @@ class Presenter : ViewModel() {
 
         filmsInfo.forEach { dataSet.add(Films(film = it)) }
         return dataSet
+    }
+
+    /******** DB *******/
+
+    fun setFilmInFavorite(name: String) : Boolean? {
+        var currentFilm: FilmInfo? = null
+
+        model.getRequestData().forEach {
+            if (it.localized_name == name) currentFilm = it
+        }
+        if(currentFilm!!.isFavorite) {
+            currentFilm?.isFavorite = false
+            model.deleteFilmInFavorite(currentFilm!!)
+        } else {
+            currentFilm?.isFavorite = true
+            model.saveFilmInFavorite(currentFilm!!)
+        }
+
+        settingData()
+        return currentFilm?.isFavorite
     }
 }
