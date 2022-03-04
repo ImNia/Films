@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    >
+    android:layout_height="match_parent">
+
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/descriptionFilmFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="start"
-        android:id="@+id/descriptionFilmFragment"
         tools:context=".description.FilmDescriptionFragment">
 
         <com.google.android.material.imageview.ShapeableImageView
@@ -33,12 +32,11 @@
             android:id="@+id/favorite_indicator"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:paddingTop="24dp"
             android:contentDescription="@string/content_description_favorite"
-            app:tint="@color/base_color"
-            app:layout_constraintTop_toTopOf="@+id/imageFilmDesc"
+            android:paddingTop="24dp"
             app:layout_constraintEnd_toEndOf="@+id/imageFilmDesc"
-            />
+            app:layout_constraintTop_toTopOf="@+id/imageFilmDesc"
+            app:tint="@color/base_color" />
 
         <TextView
             android:id="@+id/originName"
@@ -46,15 +44,15 @@
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
+            android:layout_marginTop="24dp"
             android:fontFamily="@font/roboto_700"
             android:gravity="center_vertical"
             android:lineSpacingExtra="2sp"
-            android:textSize="26sp"
-            android:textStyle="normal"
-            android:textColor="@color/black"
-            android:layout_marginTop="24dp"
             android:paddingStart="16dp"
             android:paddingEnd="16dp"
+            android:textColor="@color/black"
+            android:textSize="26sp"
+            android:textStyle="normal"
             app:layout_constraintTop_toBottomOf="@+id/imageFilmDesc"
             tools:text="Name Film" />
 
@@ -64,15 +62,15 @@
             android:layout_height="20dp"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
+            android:layout_marginTop="8dp"
             android:fontFamily="@font/roboto_400"
             android:gravity="center_vertical"
             android:lineSpacingExtra="1sp"
+            android:paddingStart="16dp"
+            android:paddingEnd="0dp"
             android:textColor="@color/descYearText"
             android:textSize="16sp"
             android:textStyle="normal"
-            android:layout_marginTop="8dp"
-            android:paddingStart="16dp"
-            android:paddingEnd="0dp"
             app:layout_constraintTop_toBottomOf="@+id/originName"
             tools:text="Year" />
 
@@ -80,15 +78,15 @@
             android:id="@+id/rating"
             android:layout_width="wrap_content"
             android:layout_height="28dp"
+            android:layout_marginTop="10dp"
             android:fontFamily="@font/roboto_700"
+            android:paddingStart="16dp"
+            android:paddingEnd="0dp"
             android:textColor="@color/base_color"
             android:textSize="24sp"
             android:textStyle="bold"
-            android:layout_marginTop="10dp"
-            android:paddingStart="16dp"
-            android:paddingEnd="0dp"
-            app:layout_constraintTop_toBottomOf="@+id/genres_with_year"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/genres_with_year"
             tools:text="Rating" />
 
         <TextView

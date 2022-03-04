@@ -1,17 +1,16 @@
 package com.delirium.films.favorite
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.delirium.films.R
 import com.delirium.films.databinding.FragmentFavoriteBinding
 import com.delirium.films.model.FilmInfo
 
@@ -63,7 +62,7 @@ class FavoriteFragment : Fragment(), ClickFavoriteFilm {
     }
 
     fun showFavoriteFilm(films: MutableList<FilmInfo>) {
-        if(films.isNotEmpty()) {
+        if (films.isNotEmpty()) {
             viewBinding.textWithoutFilms.visibility = View.INVISIBLE
             viewBinding.goToFilms.visibility = View.INVISIBLE
         }
@@ -84,7 +83,7 @@ class FavoriteFragment : Fragment(), ClickFavoriteFilm {
     }
 
     override fun onClickFilm(name: String, isFavorite: Boolean) {
-        if(isFavorite) {
+        if (isFavorite) {
             presenter.deleteFromFavorite(name)
         } else {
             presenter.goToDescriptionFilm(name)

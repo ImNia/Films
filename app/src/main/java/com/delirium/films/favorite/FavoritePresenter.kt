@@ -22,7 +22,7 @@ class FavoritePresenter : ViewModel() {
         presenter.presenter = this
     }
 
-    private fun changeStateView() = when(haveFilmsInFavorite) {
+    private fun changeStateView() = when (haveFilmsInFavorite) {
         false -> {
             favoriteView?.showFavoriteFilm(mutableListOf())
             favoriteView?.showNotFilms()
@@ -48,7 +48,7 @@ class FavoritePresenter : ViewModel() {
         changeStateView()
     }
 
-    private fun getFilmByName(name: String) : FilmInfo? {
+    private fun getFilmByName(name: String): FilmInfo? {
         val allFilm = model.getAllFavorite()
         var currentFilm: FilmInfo? = null
         allFilm.forEach {

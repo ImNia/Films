@@ -6,7 +6,6 @@ import io.realm.Realm
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.lang.NumberFormatException
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 
@@ -16,7 +15,7 @@ class Model(val filmsPresenter: FilmsPresenter) {
 
     private val realmDB: Realm = Realm.getInstance(configDB.getConfigDB())
 
-    private var requestData : List<FilmInfo> = listOf()
+    private var requestData: List<FilmInfo> = listOf()
 
     fun getData() {
         filmRequest.films().enqueue(object : Callback<FilmList> {
@@ -37,7 +36,7 @@ class Model(val filmsPresenter: FilmsPresenter) {
                 call: Call<FilmList>,
                 response: Response<FilmList>
             ) {
-                if(response.isSuccessful) {
+                if (response.isSuccessful) {
                     requestData = response.body()?.films as List<FilmInfo>
                     checkIsFavorite()
                     filmsPresenter.loadData()
@@ -48,7 +47,7 @@ class Model(val filmsPresenter: FilmsPresenter) {
         })
     }
 
-    fun getRequestData() : List<FilmInfo> {
+    fun getRequestData(): List<FilmInfo> {
         if (requestData.isNotEmpty()) checkIsFavorite()
         return requestData
     }
@@ -94,7 +93,7 @@ class Model(val filmsPresenter: FilmsPresenter) {
     )
 
     private fun converterFavoriteFilmToFilmInfo(favoriteFilm: List<FavoriteFilm>)
-    : List<FilmInfo> {
+            : List<FilmInfo> {
         return favoriteFilm.map {
             val genres = it.genres?.split(",") ?: listOf()
             genres.forEach { it.trim() }

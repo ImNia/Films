@@ -1,6 +1,5 @@
 package com.delirium.films
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -50,7 +49,7 @@ class FilmAdapter(private val clickListener: ClickElement) :
             binding.imageFilm.isClickable = true
             binding.imageFilm.setOnClickListener(this)
 
-            if(item.isFavorite)
+            if (item.isFavorite)
                 binding.favoriteIndicator.setImageResource(R.drawable.ic_favorite_black_24dp)
             else binding.favoriteIndicator.setImageResource(R.drawable.ic_favorite_border_black_24dp)
             binding.favoriteIndicator.isClickable = true

@@ -11,7 +11,9 @@ import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.delirium.films.*
+import com.delirium.films.ClickElement
+import com.delirium.films.FilmAdapter
+import com.delirium.films.R
 import com.delirium.films.databinding.FragmentFilmsBinding
 import com.delirium.films.model.*
 import com.google.android.material.snackbar.Snackbar

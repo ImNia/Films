@@ -1,13 +1,12 @@
 package com.delirium.films.favorite
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.delirium.films.R
 import com.delirium.films.databinding.FilmsItemFavoriteBinding
-import com.delirium.films.model.*
+import com.delirium.films.model.FilmInfo
 import com.squareup.picasso.Picasso
 
 class FavoriteAdapter(private val clickListener: ClickFavoriteFilm) :
@@ -30,8 +29,10 @@ class FavoriteAdapter(private val clickListener: ClickFavoriteFilm) :
             binding.imageFilm.isClickable = true
             binding.imageFilm.setOnClickListener(this)
 
-            if(item.isFavorite) binding.favoriteIndicator.setImageResource(R.drawable.ic_favorite_black_24dp)
-            else binding.favoriteIndicator.setImageResource(R.drawable.ic_favorite_border_black_24dp)
+            if (item.isFavorite)
+                binding.favoriteIndicator.setImageResource(R.drawable.ic_favorite_black_24dp)
+            else
+                binding.favoriteIndicator.setImageResource(R.drawable.ic_favorite_border_black_24dp)
             binding.favoriteIndicator.isClickable = true
             binding.favoriteIndicator.setOnClickListener(this)
 

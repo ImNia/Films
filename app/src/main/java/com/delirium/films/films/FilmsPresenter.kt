@@ -1,6 +1,8 @@
 package com.delirium.films.films
 
-import com.delirium.films.model.*
+import com.delirium.films.model.FilmInfo
+import com.delirium.films.model.Model
+import com.delirium.films.model.StatusCode
 import java.io.Serializable
 
 class FilmsPresenter : Serializable {
@@ -83,7 +85,7 @@ class FilmsPresenter : Serializable {
     private fun defineGenres(filmsInfo: List<FilmInfo>) =
         filmsInfo.flatMap { it.genres }.distinct().sorted()
 
-    private fun filmsFilterByGenre(filmsInfo: List<FilmInfo>) = if(selectGenre != null) {
+    private fun filmsFilterByGenre(filmsInfo: List<FilmInfo>) = if (selectGenre != null) {
         filmsInfo.filter { film: FilmInfo -> film.genres.contains(selectGenre) }
     } else {
         filmsInfo
@@ -100,13 +102,13 @@ class FilmsPresenter : Serializable {
 
     /******** DB *******/
 
-    fun setFilmInFavorite(name: String) : Boolean? {
+    fun setFilmInFavorite(name: String): Boolean? {
         var currentFilm: FilmInfo? = null
 
         model.getRequestData().forEach {
             if (it.localized_name == name) currentFilm = it
         }
-        if(currentFilm!!.isFavorite) {
+        if (currentFilm!!.isFavorite) {
             currentFilm?.isFavorite = false
             model.deleteFilmInFavorite(currentFilm!!)
         } else {

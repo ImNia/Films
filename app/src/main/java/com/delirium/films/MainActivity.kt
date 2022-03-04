@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity() {
 
         bindingMain.toolBar.setupWithNavController(navController, appBarNavController)
         bindingMain.toolBar.setOnMenuItemClickListener { menuItem ->
-            when(menuItem.itemId) {
+            when (menuItem.itemId) {
                 R.id.favorite -> {
                     Log.i("MAIN", "Click on heard")
                     navController.navigate(R.id.favoriteFragment)

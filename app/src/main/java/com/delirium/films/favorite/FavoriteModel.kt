@@ -9,7 +9,7 @@ class FavoriteModel(val presenter: FavoritePresenter) {
     private val configDB: RealmConfiguration = RealmConfiguration()
     private val realmDB: Realm = Realm.getInstance(configDB.getConfigDB())
 
-    fun deleteFilmInFavorite(film: FilmInfo) : List<FilmInfo> {
+    fun deleteFilmInFavorite(film: FilmInfo): List<FilmInfo> {
         realmDB.beginTransaction()
         val removeObject = realmDB.where(FavoriteFilm::class.java)
             .equalTo("id", film.id)
@@ -19,7 +19,7 @@ class FavoriteModel(val presenter: FavoritePresenter) {
         return getAllFavorite()
     }
 
-    fun getAllFavorite() : List<FilmInfo> {
+    fun getAllFavorite(): List<FilmInfo> {
         val data = realmDB.where(FavoriteFilm::class.java).findAll()
 
         return converterFavoriteFilmToFilmInfo(data)

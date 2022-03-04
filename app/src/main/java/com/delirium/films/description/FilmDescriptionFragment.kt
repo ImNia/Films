@@ -1,10 +1,10 @@
 package com.delirium.films.description
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import com.delirium.films.R
 import com.delirium.films.databinding.FragmentFilmDescriptionBinding
@@ -31,9 +31,9 @@ class FilmDescriptionFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         Picasso.with(viewBinding.imageFilmDesc.context)
-                .load(film.image_url)
-                .placeholder(R.drawable.not_found)
-                .into(viewBinding.imageFilmDesc)
+            .load(film.image_url)
+            .placeholder(R.drawable.not_found)
+            .into(viewBinding.imageFilmDesc)
 
         viewBinding.originName.text = film.localized_name
 
@@ -59,14 +59,14 @@ class FilmDescriptionFragment : Fragment() {
     }
 
     private fun setIconFavorite() {
-        if(film.isFavorite)
+        if (film.isFavorite)
             viewBinding.favoriteIndicator.setImageResource(R.drawable.ic_favorite_black_24dp)
         else
             viewBinding.favoriteIndicator.setImageResource(R.drawable.ic_favorite_border_black_24dp)
     }
 
-    private fun joinGenreWithYear(genres: List<String>, year: String?) : String {
-        val genreWithYear : MutableList<String> = mutableListOf()
+    private fun joinGenreWithYear(genres: List<String>, year: String?): String {
+        val genreWithYear: MutableList<String> = mutableListOf()
         genreWithYear.addAll(genres)
 
         year?.let {
@@ -76,8 +76,8 @@ class FilmDescriptionFragment : Fragment() {
     }
 
     private fun transformRatingToString(rating: String?) = rating?.let {
-            String.format("%.1f", it.toDouble()).replace(",", ".")
-        } ?: getString(R.string.rating_without_value)
+        String.format("%.1f", it.toDouble()).replace(",", ".")
+    } ?: getString(R.string.rating_without_value)
 
     override fun onDestroyView() {
         super.onDestroyView()

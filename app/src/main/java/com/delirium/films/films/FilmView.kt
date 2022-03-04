@@ -1,7 +1,6 @@
 package com.delirium.films.films
 
 import com.delirium.films.model.FilmInfo
-import com.delirium.films.model.ModelAdapter
 import com.delirium.films.model.StatusCode
 
 interface FilmView {
@@ -10,6 +9,7 @@ interface FilmView {
         films: List<FilmInfo>,
         selectGenre: String?
     )
+
     fun showFilmDescription(film: FilmInfo)
     fun showProgressBar()
     fun hideProgressBar()
