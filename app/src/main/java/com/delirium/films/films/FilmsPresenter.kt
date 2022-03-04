@@ -1,10 +1,9 @@
 package com.delirium.films.films
 
-import androidx.lifecycle.ViewModel
 import com.delirium.films.model.*
 import java.io.Serializable
 
-class FilmsPresenter : ViewModel(), Serializable {
+class FilmsPresenter : Serializable {
     private var filmView: FilmView? = null
     private var selectGenre: String? = null
     private val model = Model(this)
@@ -23,8 +22,9 @@ class FilmsPresenter : ViewModel(), Serializable {
         this.filmView = filmView
     }
 
-    fun detachView() {
+    fun detachView(viewPresenter: ViewModelFilmsPresenter) {
         filmView = null
+        viewPresenter.presenter = this
     }
 
     private fun changeStateView(statusCode: StatusCode?) = when {
@@ -77,7 +77,7 @@ class FilmsPresenter : ViewModel(), Serializable {
         val receivedData = model.getRequestData()
         val genres = defineGenres(receivedData)
         val filterFilm = filmsFilterByGenre(receivedData)
-        filmView?.showGenresAndFilms(setDataByFilmsAndGenres(genres, filterFilm))
+        filmView?.showGenresAndFilms(genres, filterFilm, selectGenre)
     }
 
     private fun defineGenres(filmsInfo: List<FilmInfo>) =
@@ -96,20 +96,6 @@ class FilmsPresenter : ViewModel(), Serializable {
             if (it.localized_name == name) currentFilm = it
         }
         currentFilm?.let { filmView?.showFilmDescription(it) }
-    }
-
-    private fun setDataByFilmsAndGenres(
-        genres: List<String>,
-        filmsInfo: List<FilmInfo>
-    ): MutableList<ModelAdapter> {
-        val dataSet = mutableListOf<ModelAdapter>()
-
-        dataSet.add(Titles("Жанры")) //TODO R.string.genre_title
-        genres.forEach { dataSet.add(Genres(genre = it, isSelected = it == selectGenre)) }
-        dataSet.add(Titles("Фильмы")) //TODO R.string.film_title
-
-        filmsInfo.forEach { dataSet.add(Films(film = it)) }
-        return dataSet
     }
 
     /******** DB *******/

@@ -50,7 +50,8 @@ class FilmAdapter(private val clickListener: ClickElement) :
             binding.imageFilm.isClickable = true
             binding.imageFilm.setOnClickListener(this)
 
-            if(item.isFavorite) binding.favoriteIndicator.setImageResource(R.drawable.ic_favorite_black_24dp)
+            if(item.isFavorite)
+                binding.favoriteIndicator.setImageResource(R.drawable.ic_favorite_black_24dp)
             else binding.favoriteIndicator.setImageResource(R.drawable.ic_favorite_border_black_24dp)
             binding.favoriteIndicator.isClickable = true
             binding.favoriteIndicator.setOnClickListener(this)

@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
@@ -24,7 +25,8 @@ class FavoriteFragment : Fragment(), ClickFavoriteFilm {
     private var _adapter: FavoriteAdapter? = null
     private val adapter get() = _adapter!!
 
-    private val presenter: FavoritePresenter = FavoritePresenter()
+    private val presenterViewModel: ViewModelFavoritePresenter by activityViewModels()
+    private lateinit var presenter: FavoritePresenter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,6 +43,7 @@ class FavoriteFragment : Fragment(), ClickFavoriteFilm {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _adapter = FavoriteAdapter(this)
+        presenter = presenterViewModel.presenter ?: FavoritePresenter()
         presenter.attachView(this)
         presenter.getFilmInFavorite()
         recyclerView?.adapter = adapter
@@ -56,7 +59,7 @@ class FavoriteFragment : Fragment(), ClickFavoriteFilm {
     override fun onDestroyView() {
         super.onDestroyView()
         _viewBinding = null
-        presenter.detachView()
+        presenter.detachView(presenterViewModel)
     }
 
     fun showFavoriteFilm(films: MutableList<FilmInfo>) {

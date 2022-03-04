@@ -17,8 +17,9 @@ class FavoritePresenter : ViewModel() {
         this.favoriteView = favoriteView
     }
 
-    fun detachView() {
+    fun detachView(presenter: ViewModelFavoritePresenter) {
         favoriteView = null
+        presenter.presenter = this
     }
 
     private fun changeStateView() = when(haveFilmsInFavorite) {

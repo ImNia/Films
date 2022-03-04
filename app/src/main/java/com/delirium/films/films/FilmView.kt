@@ -6,7 +6,9 @@ import com.delirium.films.model.StatusCode
 
 interface FilmView {
     fun showGenresAndFilms(
-        dataToShow: MutableList<ModelAdapter>
+        genres: List<String>,
+        films: List<FilmInfo>,
+        selectGenre: String?
     )
     fun showFilmDescription(film: FilmInfo)
     fun showProgressBar()

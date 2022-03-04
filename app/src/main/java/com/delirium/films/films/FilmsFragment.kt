@@ -27,7 +27,8 @@ class FilmsFragment : Fragment(), FilmView, ClickElement {
     private val filmsBinding get() = _filmsBinding!!
 
     private var snackBar: Snackbar? = null
-    private val filmsPresenter: FilmsPresenter by activityViewModels()
+    private val presenterViewModel: ViewModelFilmsPresenter by activityViewModels()
+    private lateinit var filmsPresenter: FilmsPresenter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,6 +44,7 @@ class FilmsFragment : Fragment(), FilmView, ClickElement {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        filmsPresenter = presenterViewModel.presenter ?: FilmsPresenter()
         filmsPresenter.attachView(this)
 
         _adapter = FilmAdapter(this)
@@ -68,15 +70,35 @@ class FilmsFragment : Fragment(), FilmView, ClickElement {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        filmsPresenter.detachView()
+        filmsPresenter.detachView(presenterViewModel)
         _filmsBinding = null
         recyclerView = null
         _adapter = null
     }
 
-    override fun showGenresAndFilms(dataToShow: MutableList<ModelAdapter>) {
+    override fun showGenresAndFilms(
+        genres: List<String>,
+        films: List<FilmInfo>,
+        selectGenre: String?
+    ) {
+        val dataToShow = setDataByFilmsAndGenres(genres, films, selectGenre)
         adapter.data = dataToShow
         adapter.notifyDataSetChanged()
+    }
+
+    private fun setDataByFilmsAndGenres(
+        genres: List<String>,
+        filmsInfo: List<FilmInfo>,
+        selectGenre: String?
+    ): MutableList<ModelAdapter> {
+        val dataSet = mutableListOf<ModelAdapter>()
+
+        dataSet.add(Titles(getString(R.string.genre_title)))
+        genres.forEach { dataSet.add(Genres(genre = it, isSelected = it == selectGenre)) }
+        dataSet.add(Titles(getString(R.string.film_title)))
+
+        filmsInfo.forEach { dataSet.add(Films(film = it)) }
+        return dataSet
     }
 
     override fun showFilmDescription(film: FilmInfo) {
