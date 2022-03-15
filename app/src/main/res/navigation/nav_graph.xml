@@ -25,9 +25,6 @@
         <argument
             android:name="titleDesc"
             app:argType="string" />
-        <argument
-            android:name="presenter"
-            app:argType="com.delirium.films.films.FilmsPresenter" />
     </fragment>
     <fragment
         android:id="@+id/favoriteFragment"

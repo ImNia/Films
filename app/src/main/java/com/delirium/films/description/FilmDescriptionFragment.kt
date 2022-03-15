@@ -16,7 +16,7 @@ class FilmDescriptionFragment : Fragment() {
 
     private val args by navArgs<FilmDescriptionFragmentArgs>()
     private val film by lazy { args.selectedFilm }
-    private val presenter by lazy { args.presenter }
+    private var presenter = FilmDescriptionPresenter()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

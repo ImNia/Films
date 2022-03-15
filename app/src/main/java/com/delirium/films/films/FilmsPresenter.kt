@@ -5,7 +5,7 @@ import com.delirium.films.model.Model
 import com.delirium.films.model.StatusCode
 import java.io.Serializable
 
-class FilmsPresenter : Serializable {
+class FilmsPresenter : CallbackFilm {
     private var filmView: FilmView? = null
     private var selectGenre: String? = null
     private val model = Model(this)
@@ -40,12 +40,6 @@ class FilmsPresenter : Serializable {
             filmView?.snackBarWithError(statusCode)
         }
         else -> Unit
-    }
-
-    fun responseOnFailure(statusCode: StatusCode? = null) {
-        gotError = true
-        loadingInProgress = false
-        loadData(statusCode)
     }
 
     fun retryLoadDataOnError() {
@@ -98,6 +92,18 @@ class FilmsPresenter : Serializable {
             if (it.localized_name == name) currentFilm = it
         }
         currentFilm?.let { filmView?.showFilmDescription(it) }
+    }
+
+    /******* Callback *******/
+
+    override fun successful() {
+        loadData()
+    }
+
+    override fun failed(statusCode: StatusCode?) {
+        gotError = true
+        loadingInProgress = false
+        loadData(statusCode)
     }
 
     /******** DB *******/

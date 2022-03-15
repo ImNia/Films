@@ -108,8 +108,7 @@ class FilmsFragment : Fragment(), FilmView, ClickElement {
             //TODO изменить установку заголовка
             FilmsFragmentDirections.actionFilmsFragmentToFilmDescription(
                 film,
-                film.name ?: getString(R.string.no_title),
-                filmsPresenter
+                film.name ?: getString(R.string.no_title)
             )
         )
     }

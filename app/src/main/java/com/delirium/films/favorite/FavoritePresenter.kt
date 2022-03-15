@@ -2,10 +2,11 @@ package com.delirium.films.favorite
 
 import androidx.lifecycle.ViewModel
 import com.delirium.films.model.FilmInfo
+import com.delirium.films.model.Model
 
 class FavoritePresenter : ViewModel() {
     private var favoriteView: FavoriteFragment? = null
-    private val model = FavoriteModel(this)
+    private val model = Model(null)
 
     private var haveFilmsInFavorite: Boolean = false
 
@@ -43,7 +44,7 @@ class FavoritePresenter : ViewModel() {
 
     fun deleteFromFavorite(name: String) {
         val film = getFilmByName(name)!!
-        val filmsAfterDelete = model.deleteFilmInFavorite(film)
+        val filmsAfterDelete = model.deleteFilmInFavoriteList(film)
         haveFilmsInFavorite = filmsAfterDelete.isNotEmpty()
         changeStateView()
     }

@@ -1,6 +1,7 @@
 package com.delirium.films.model
 
 import com.delirium.films.RealmConfiguration
+import com.delirium.films.films.CallbackFilm
 import com.delirium.films.films.FilmsPresenter
 import io.realm.Realm
 import retrofit2.Call
@@ -9,7 +10,7 @@ import retrofit2.Response
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 
-class Model(val filmsPresenter: FilmsPresenter) {
+class Model(val callback: CallbackFilm?) {
     private val filmRequest: FilmsRequest = SequeniaTestTaskSetting.filmsRequest
     private val configDB: RealmConfiguration = RealmConfiguration()
 
@@ -22,12 +23,12 @@ class Model(val filmsPresenter: FilmsPresenter) {
             override fun onFailure(call: Call<FilmList>, t: Throwable) {
                 when (t) {
                     is SocketTimeoutException ->
-                        filmsPresenter.responseOnFailure(StatusCode.REQUEST_TIMEOUT)
+                        callback?.failed(StatusCode.REQUEST_TIMEOUT)
                     is NumberFormatException ->
-                        filmsPresenter.responseOnFailure(StatusCode.CONFLICT_VALUE)
+                        callback?.failed(StatusCode.CONFLICT_VALUE)
                     is UnknownHostException ->
-                        filmsPresenter.responseOnFailure(StatusCode.NOT_CONNECT)
-                    else -> filmsPresenter.responseOnFailure(StatusCode.SOME_ERROR)
+                        callback?.failed(StatusCode.NOT_CONNECT)
+                    else -> callback?.failed(StatusCode.SOME_ERROR)
                 }
                 t.printStackTrace()
             }
@@ -39,9 +40,9 @@ class Model(val filmsPresenter: FilmsPresenter) {
                 if (response.isSuccessful) {
                     requestData = response.body()?.films as List<FilmInfo>
                     checkIsFavorite()
-                    filmsPresenter.loadData()
+                    callback?.successful()
                 } else {
-                    filmsPresenter.responseOnFailure(StatusCode.NOT_FOUND)
+                    callback?.failed(StatusCode.NOT_FOUND)
                 }
             }
         })
@@ -78,6 +79,17 @@ class Model(val filmsPresenter: FilmsPresenter) {
             .findFirst()
         removeObject?.deleteFromRealm()
         realmDB.commitTransaction()
+    }
+
+    fun deleteFilmInFavoriteList(film: FilmInfo): List<FilmInfo> {
+        deleteFilmInFavorite(film)
+        return getAllFavorite()
+    }
+
+    fun getAllFavorite(): List<FilmInfo> {
+        val data = realmDB.where(FavoriteFilm::class.java).findAll()
+
+        return converterFavoriteFilmToFilmInfo(data)
     }
 
     private fun converterFilmInfoToFavoriteFilm(filmInfo: FilmInfo) = FavoriteFilm(

@@ -12,9 +12,10 @@
     <color name="progress_bar">#57c6de</color>
 
     <color name="snackBarColor">#232323</color>
-    <color name="snackBarColorAction">#8868CC</color>
+    <color name="snackBarColorAction">#A77DFF</color>
 
     <color name="descYearText">#4B4B4B</color>
     <color name="indicator">#6936D6</color>
 
+    <color name="red">#F44336</color>
 </resources>
